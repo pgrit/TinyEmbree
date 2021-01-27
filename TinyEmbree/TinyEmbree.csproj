@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Title>TinyEmbree</Title>
+    <Description>A very simple C# wrapper around the Embree ray tracing kernels.</Description>
+    <PackageId>TinyEmbree</PackageId>
+    <Version>0.1.0</Version>
+    <Copyright>(c) Pascal Grittmann</Copyright>
+    <RepositoryUrl>https://github.com/pgrit/TinyEmbree</RepositoryUrl>
+
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Authors>Pascal Grittmann</Authors>
+    <IncludeBuildOutput>true</IncludeBuildOutput>
+    <IsPackable>true</IsPackable>
+    <PackageTags>ray tracing Embree</PackageTags>
+
+    <TargetFramework>net5.0</TargetFramework>
+    <!-- Each additional platform requires an entry here, once the native binaries have been added below -->
+    <RuntimeIdentifiers>win10-x64;linux-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <!-- Each additional platform requires an entry here, to copy the corresponding native binaries -->
+  <ItemGroup>
+    <Content CopyToOutputDirectory="Always"
+			Include="../Dist/TinyEmbreeCore.dll"
+			Pack="true"
+			PackagePath="runtimes/win-x64/native/"
+      Condition="Exists('../Dist/TinyEmbreeCore.dll')"/>
+    <Content CopyToOutputDirectory="Always"
+			Include="../Dist/embree3.dll"
+			Pack="true"
+			PackagePath="runtimes/win-x64/native/"
+      Condition="Exists('../Dist/embree3.dll')"/>
+    <Content CopyToOutputDirectory="Always"
+			Include="../Dist/tbb.dll"
+			Pack="true"
+			PackagePath="runtimes/win-x64/native/"
+      Condition="Exists('../Dist/tbb.dll')"/>
+
+    <Content CopyToOutputDirectory="Always"
+			Include="../Dist/libTinyEmbreeCore.so"
+			Pack="true"
+			PackagePath="runtimes/linux-x64/native/"
+      Condition="Exists('../Dist/libTinyEmbreeCore.so')"/>
+    <Content CopyToOutputDirectory="Always"
+			Include="../Dist/libembree3.so"
+			Pack="true"
+			PackagePath="runtimes/linux-x64/native/"
+      Condition="Exists('../Dist/libembree3.so')"/>
+    <Content CopyToOutputDirectory="Always"
+			Include="../Dist/libtbb.so"
+			Pack="true"
+			PackagePath="runtimes/linux-x64/native/"
+      Condition="Exists('../Dist/libtbb.so')"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../LICENSE" Pack="true" PackagePath=""/>
+    <None Include="../README.md" Pack="true" PackagePath=""/>
+  </ItemGroup>
+
+</Project>
