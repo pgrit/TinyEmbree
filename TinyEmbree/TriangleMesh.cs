@@ -3,8 +3,8 @@ using System.Numerics;
 
 namespace TinyEmbree {
 
-    public class Mesh {
-        public Mesh(Vector3[] vertices, int[] indices, Vector3[] shadingNormals = null,
+    public class TriangleMesh {
+        public TriangleMesh(Vector3[] vertices, int[] indices, Vector3[] shadingNormals = null,
                     Vector2[] textureCoordinates = null) {
             Vertices = vertices;
             Indices = indices;
@@ -47,18 +47,6 @@ namespace TinyEmbree {
                 for (int i = 0; i < this.shadingNormals.Length; ++i)
                     this.shadingNormals[i] = Vector3.Normalize(this.shadingNormals[i]);
             }
-        }
-
-        float ComputeErrorOffset(int faceIdx, Vector2 barycentricCoords) {
-            var v1 = Vertices[Indices[faceIdx * 3 + 0]];
-            var v2 = Vertices[Indices[faceIdx * 3 + 1]];
-            var v3 = Vertices[Indices[faceIdx * 3 + 2]];
-
-            Vector3 errorDiagonal = Vector3.Abs(barycentricCoords.X * v2)
-                + Vector3.Abs(barycentricCoords.Y * v3)
-                + Vector3.Abs((1 - barycentricCoords.X - barycentricCoords.Y) * v1);
-
-            return errorDiagonal.Length() * 32.0f * 1.19209e-07f;
         }
 
         public Vector2 ComputeTextureCoordinates(int faceIdx, Vector2 barycentric) {

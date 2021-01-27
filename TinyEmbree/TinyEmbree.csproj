@@ -22,36 +22,37 @@
   <!-- Each additional platform requires an entry here, to copy the corresponding native binaries -->
   <ItemGroup>
     <Content CopyToOutputDirectory="Always"
-			Include="../Dist/TinyEmbreeCore.dll"
+			Include="../Runtime/TinyEmbreeCore.dll"
 			Pack="true"
 			PackagePath="runtimes/win-x64/native/"
-      Condition="Exists('../Dist/TinyEmbreeCore.dll')"/>
+      Condition="Exists('../Runtime/TinyEmbreeCore.dll')"/>
     <Content CopyToOutputDirectory="Always"
-			Include="../Dist/embree3.dll"
+			Include="../Runtime/embree3.dll"
 			Pack="true"
 			PackagePath="runtimes/win-x64/native/"
-      Condition="Exists('../Dist/embree3.dll')"/>
+      Condition="Exists('../Runtime/embree3.dll')"/>
     <Content CopyToOutputDirectory="Always"
-			Include="../Dist/tbb.dll"
+			Include="../Runtime/tbb.dll"
 			Pack="true"
 			PackagePath="runtimes/win-x64/native/"
-      Condition="Exists('../Dist/tbb.dll')"/>
+      Condition="Exists('../Runtime/tbb.dll')"/>
 
     <Content CopyToOutputDirectory="Always"
-			Include="../Dist/libTinyEmbreeCore.so"
+			Include="../Runtime/libTinyEmbreeCore.so"
 			Pack="true"
 			PackagePath="runtimes/linux-x64/native/"
-      Condition="Exists('../Dist/libTinyEmbreeCore.so')"/>
+      Condition="Exists('../Runtime/libTinyEmbreeCore.so')"/>
     <Content CopyToOutputDirectory="Always"
-			Include="../Dist/libembree3.so"
+			Include="../Runtime/libembree3.so.3"
 			Pack="true"
 			PackagePath="runtimes/linux-x64/native/"
-      Condition="Exists('../Dist/libembree3.so')"/>
+      Condition="Exists('../Runtime/libembree3.so.3')"/>
     <Content CopyToOutputDirectory="Always"
-			Include="../Dist/libtbb.so"
+			Include="../Runtime/libtbb.so.2"
 			Pack="true"
 			PackagePath="runtimes/linux-x64/native/"
-      Condition="Exists('../Dist/libtbb.so')"/>
+      Condition="Exists('../Runtime/libtbb.so.2')"/>
+
   </ItemGroup>
 
   <ItemGroup>

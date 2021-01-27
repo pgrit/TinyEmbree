@@ -1,8 +1,6 @@
 #include "raytrace.h"
 #include "scene.h"
 
-#include <tbb/parallel_for.h>
-
 std::vector<std::unique_ptr<tinyembree::Scene>> globalScenes;
 
 extern "C" {
@@ -10,12 +8,14 @@ extern "C" {
 TINY_EMBREE_API int InitScene() {
     globalScenes.emplace_back(new tinyembree::Scene());
     globalScenes.back()->Init();
-    return int(globalScenes.size()) - 1;
+    int idx = int(globalScenes.size()) - 1;
+    return idx;
 }
 
 TINY_EMBREE_API int AddTriangleMesh(int scene, const float* vertices, int numVerts,
                                     const int* indices, int numIdx) {
-    return globalScenes[scene]->AddMesh(vertices, indices, numVerts, numIdx / 3);
+    int idx = globalScenes[scene]->AddMesh(vertices, indices, numVerts, numIdx / 3);
+    return idx;
 }
 
 TINY_EMBREE_API void FinalizeScene(int scene) {

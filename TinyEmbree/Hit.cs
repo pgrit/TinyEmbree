@@ -5,7 +5,7 @@ namespace TinyEmbree {
         public Vector3 Position;
         public Vector3 Normal;
         public Vector2 BarycentricCoords;
-        public Mesh Mesh;
+        public TriangleMesh Mesh;
         public uint PrimId;
         public float ErrorOffset;
         public float Distance;

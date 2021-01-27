@@ -19,7 +19,7 @@ namespace SeeSharp.Core.Tests.Geometry {
                 0, 2, 3
             };
 
-            Mesh mesh = new Mesh(vertices, indices);
+            TriangleMesh mesh = new TriangleMesh(vertices, indices);
 
             var rt = new Raytracer();
             rt.AddMesh(mesh);
@@ -50,7 +50,7 @@ namespace SeeSharp.Core.Tests.Geometry {
                 0, 2, 3
             };
 
-            Mesh mesh = new Mesh(vertices, indices);
+            TriangleMesh mesh = new TriangleMesh(vertices, indices);
 
             var rt = new Raytracer();
             rt.AddMesh(mesh);

@@ -10,7 +10,7 @@ namespace TinyEmbree {
             sceneId = TinyEmbreeCore.InitScene();
         }
 
-        public void AddMesh(Mesh mesh) {
+        public void AddMesh(TriangleMesh mesh) {
             uint meshId = (uint)TinyEmbreeCore.AddTriangleMesh(sceneId, mesh.Vertices, mesh.NumVertices,
                 mesh.Indices, mesh.NumFaces * 3);
             meshMap[meshId] = mesh;
@@ -116,6 +116,6 @@ namespace TinyEmbree {
             };
         }
 
-        SortedList<uint, Mesh> meshMap = new();
+        SortedList<uint, TriangleMesh> meshMap = new();
     }
 }

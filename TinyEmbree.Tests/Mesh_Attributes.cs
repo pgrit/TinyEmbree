@@ -32,7 +32,7 @@ namespace SeeSharp.Core.Tests.Geometry {
                 new Vector3(1, 0, -1),
             };
 
-            Mesh mesh = new Mesh(vertices, indices, shadingNormals: normals);
+            TriangleMesh mesh = new TriangleMesh(vertices, indices, shadingNormals: normals);
 
             var n1 = mesh.ComputeShadingNormal(0, new Vector2(0.5f, 0.5f));
             var n2 = mesh.ComputeShadingNormal(1, new Vector2(0.5f, 0.5f));
@@ -60,7 +60,7 @@ namespace SeeSharp.Core.Tests.Geometry {
                 0, 2, 3
             };
 
-            Mesh mesh = new Mesh(vertices, indices);
+            TriangleMesh mesh = new TriangleMesh(vertices, indices);
 
             var n1 = mesh.ComputeShadingNormal(0, new Vector2(0.5f, 0.25f));
             var n2 = mesh.ComputeShadingNormal(0, new Vector2(0.25f, 0.5f));
