@@ -16,7 +16,7 @@
 
     <TargetFramework>net5.0</TargetFramework>
     <!-- Each additional platform requires an entry here, once the native binaries have been added below -->
-    <RuntimeIdentifiers>win10-x64;linux-x64;osx.10.15-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win10-x64;linux-x64;osx-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <!-- Each additional platform requires an entry here, to copy the corresponding native binaries -->
@@ -53,12 +53,21 @@
 			PackagePath="runtimes/linux-x64/native/"
       Condition="Exists('../Runtime/libtbb.so.2')"/>
 
-
     <Content CopyToOutputDirectory="Always"
 			Include="../Runtime/libTinyEmbreeCore.dylib"
 			Pack="true"
-			PackagePath="runtimes/osx.10.15-x64/native/"
+			PackagePath="runtimes/osx-x64/native/"
       Condition="Exists('../Runtime/libTinyEmbreeCore.dylib')"/>
+    <Content CopyToOutputDirectory="Always"
+			Include="../Runtime/libembree3.3.dylib"
+			Pack="true"
+			PackagePath="runtimes/osx-x64/native/"
+      Condition="Exists('../Runtime/libembree3.3.dylib')"/>
+    <Content CopyToOutputDirectory="Always"
+			Include="../Runtime/libtbb.dylib"
+			Pack="true"
+			PackagePath="runtimes/osx-x64/native/"
+      Condition="Exists('../Runtime/libtbb.dylib')"/>
   </ItemGroup>
 
   <ItemGroup>
