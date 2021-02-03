@@ -38,6 +38,13 @@ set_target_properties(TinyEmbreeCore PROPERTIES
                       LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_CURRENT_SOURCE_DIR}/../Runtime
 )
 
+set_target_properties(TinyEmbreeCore
+    PROPERTIES
+        CXX_STANDARD 11
+        CXX_STANDARD_REQUIRED YES
+        CXX_EXTENSIONS NO
+)
+
 install(TARGETS TinyEmbreeCore
     DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/../Runtime
 )
