@@ -43,7 +43,12 @@ That's it. Simply add a reference to `TinyEmbree/TinyEmbree.csproj` to your proj
 
 ## Building on other platforms
 
-In theory, the package works on any platform. However, the native dependencies have to be built for each. Currently, the workflow has been set up and tested for 64 bit Windows and Linux (Ubuntu 20.04). Other platforms (like OSX) need to be built from source. For these, the [TinyEmbree.csproj](TinyEmbree/TinyEmbree.csproj) file needs to be adjusted, instructions can be found in the comments of that file. The process should be a simple copy&paste operation, provided nothing goes south when building the C++ library.
+In theory, the package works on any platform.
+However, the native dependencies have to be built for each.
+Currently, the workflow has been set up and tested for Intel 64bit Windows, Linux (Ubuntu 20.04) and macOS 10.15.
+Other platforms need to be built from source.
+For these, the [TinyEmbree.csproj](TinyEmbree/TinyEmbree.csproj) file needs to be adjusted, instructions can be found in the comments of that file.
+The process should be a simple copy&paste operation, provided nothing goes south when building the C++ library.
 
 ## Usage example
 
