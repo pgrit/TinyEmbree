@@ -22,52 +22,20 @@
   <!-- Each additional platform requires an entry here, to copy the corresponding native binaries -->
   <ItemGroup>
     <Content CopyToOutputDirectory="Always"
-			Include="../Runtime/TinyEmbreeCore.dll"
+			Include="../Runtimes/TinyEmbreeCore.dll"
 			Pack="true"
 			PackagePath="runtimes/win-x64/native/"
-      Condition="Exists('../Runtime/TinyEmbreeCore.dll')"/>
+      Condition="Exists('../Runtimes/TinyEmbreeCore.dll')"/>
     <Content CopyToOutputDirectory="Always"
-			Include="../Runtime/embree3.dll"
-			Pack="true"
-			PackagePath="runtimes/win-x64/native/"
-      Condition="Exists('../Runtime/embree3.dll')"/>
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtime/tbb.dll"
-			Pack="true"
-			PackagePath="runtimes/win-x64/native/"
-      Condition="Exists('../Runtime/tbb.dll')"/>
-
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtime/libTinyEmbreeCore.so"
+			Include="../Runtimes/libTinyEmbreeCore.so"
 			Pack="true"
 			PackagePath="runtimes/linux-x64/native/"
-      Condition="Exists('../Runtime/libTinyEmbreeCore.so')"/>
+      Condition="Exists('../Runtimes/libTinyEmbreeCore.so')"/>
     <Content CopyToOutputDirectory="Always"
-			Include="../Runtime/libembree3.so.3"
-			Pack="true"
-			PackagePath="runtimes/linux-x64/native/"
-      Condition="Exists('../Runtime/libembree3.so.3')"/>
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtime/libtbb.so.2"
-			Pack="true"
-			PackagePath="runtimes/linux-x64/native/"
-      Condition="Exists('../Runtime/libtbb.so.2')"/>
-
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtime/libTinyEmbreeCore.dylib"
+			Include="../Runtimes/libTinyEmbreeCore.dylib"
 			Pack="true"
 			PackagePath="runtimes/osx-x64/native/"
-      Condition="Exists('../Runtime/libTinyEmbreeCore.dylib')"/>
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtime/libembree3.3.dylib"
-			Pack="true"
-			PackagePath="runtimes/osx-x64/native/"
-      Condition="Exists('../Runtime/libembree3.3.dylib')"/>
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtime/libtbb.dylib"
-			Pack="true"
-			PackagePath="runtimes/osx-x64/native/"
-      Condition="Exists('../Runtime/libtbb.dylib')"/>
+      Condition="Exists('../Runtimes/libTinyEmbreeCore.dylib')"/>
   </ItemGroup>
 
   <ItemGroup>
