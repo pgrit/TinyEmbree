@@ -12,5 +12,4 @@ bin
 obj
 
 # Compiled shared libraries
-Dist/*
-Runtime/*
+Runtimes/*
