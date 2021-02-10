@@ -22,6 +22,8 @@ set(EMBREE_ISA_SSE42              OFF CACHE BOOL " " FORCE)
 set(EMBREE_ISA_AVX512             OFF CACHE BOOL " " FORCE)
 set(EMBREE_ISA_AVX                OFF CACHE BOOL " " FORCE)
 
+set(EMBREE_ZIP_MODE               ON  CACHE BOOL " " FORCE)
+
 add_subdirectory(embree)
 
 get_directory_property(EMBREE_VERSION_MAJOR
