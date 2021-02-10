@@ -11,10 +11,10 @@ namespace tinyembree {
 class Scene {
 public:
     ~Scene() {
-        // if (isInit) {
-        //     rtcReleaseScene(embreeScene);
-        //     rtcReleaseDevice(embreeDevice);
-        // }
+        if (isInit) {
+            rtcReleaseScene(embreeScene);
+            rtcReleaseDevice(embreeDevice);
+        }
     }
 
     void Init();

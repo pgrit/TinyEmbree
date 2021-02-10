@@ -3,25 +3,32 @@ using System.Collections.Generic;
 using System.Numerics;
 
 namespace TinyEmbree {
-    public class Raytracer {
-        int sceneId;
+    public class Raytracer : IDisposable {
+        IntPtr scene;
+
+        protected void Free() {
+            if (scene != IntPtr.Zero) TinyEmbreeCore.DeleteScene(scene);
+        }
+
+        ~Raytracer() => Free();
+        public void Dispose() => Free();
 
         public Raytracer() {
-            sceneId = TinyEmbreeCore.InitScene();
+            scene = TinyEmbreeCore.InitScene();
         }
 
         public void AddMesh(TriangleMesh mesh) {
-            uint meshId = (uint)TinyEmbreeCore.AddTriangleMesh(sceneId, mesh.Vertices, mesh.NumVertices,
+            uint meshId = (uint)TinyEmbreeCore.AddTriangleMesh(scene, mesh.Vertices, mesh.NumVertices,
                 mesh.Indices, mesh.NumFaces * 3);
             meshMap[meshId] = mesh;
         }
 
         public void CommitScene() {
-            TinyEmbreeCore.FinalizeScene(sceneId);
+            TinyEmbreeCore.FinalizeScene(scene);
         }
 
         public Hit Trace(Ray ray) {
-            var minHit = TinyEmbreeCore.TraceSingle(sceneId, ray);
+            var minHit = TinyEmbreeCore.TraceSingle(scene, ray);
 
             if (minHit.meshId == uint.MaxValue)
                 return new Hit();

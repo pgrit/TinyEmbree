@@ -32,13 +32,15 @@ struct Hit {
     float distance;
 };
 
-TINY_EMBREE_API int InitScene();
+TINY_EMBREE_API void* InitScene();
 
-TINY_EMBREE_API int AddTriangleMesh(int scene, const float* vertices, int numVerts,
+TINY_EMBREE_API int AddTriangleMesh(void* scene, const float* vertices, int numVerts,
                                     const int* indices, int numIdx);
 
-TINY_EMBREE_API void FinalizeScene(int scene);
+TINY_EMBREE_API void FinalizeScene(void* scene);
 
-TINY_EMBREE_API Hit TraceSingle(int scene, Ray ray);
+TINY_EMBREE_API Hit TraceSingle(void* scene, Ray ray);
+
+TINY_EMBREE_API void DeleteScene(void* scene);
 
 }

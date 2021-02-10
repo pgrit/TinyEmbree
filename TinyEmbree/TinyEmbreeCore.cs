@@ -1,16 +1,17 @@
+using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace TinyEmbree {
     internal static class TinyEmbreeCore {
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int InitScene();
+        public static extern IntPtr InitScene();
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void FinalizeScene(int scene);
+        public static extern void FinalizeScene(IntPtr scene);
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int AddTriangleMesh(int scene, Vector3[] vertices, int numVerts,
+        public static extern int AddTriangleMesh(IntPtr scene, Vector3[] vertices, int numVerts,
                                                  int[] indices, int numIdx, float[] texCoords = null,
                                                  float[] shadingNormals = null);
 
@@ -25,6 +26,9 @@ namespace TinyEmbree {
 #pragma warning restore CS0649 // The field is never assigned to
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
-        public static extern MinimalHitInfo TraceSingle(int scene, Ray ray);
+        public static extern MinimalHitInfo TraceSingle(IntPtr scene, Ray ray);
+
+        [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void DeleteScene(IntPtr scene);
     }
 }

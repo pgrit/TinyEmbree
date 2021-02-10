@@ -20,13 +20,13 @@ set(EMBREE_ISA_AVX2               ON  CACHE BOOL " " FORCE)
 set(EMBREE_ISA_SSE2               OFF CACHE BOOL " " FORCE)
 set(EMBREE_ISA_SSE42              OFF CACHE BOOL " " FORCE)
 set(EMBREE_ISA_AVX512             OFF CACHE BOOL " " FORCE)
-set(EMBREE_ISA_AVX                OFF CACHE BOOL " " FORCE)
+set(EMBREE_ISA_AVX                ON  CACHE BOOL " " FORCE)
 
 # set(EMBREE_ZIP_MODE               ON  CACHE BOOL " " FORCE)
 # set(CMAKE_MACOSX_RPATH             ON)
 # set(CMAKE_BUILD_WITH_INSTALL_RPATH ON)
 
-set(EMBREE_STATIC_LIB ON)
+# set(EMBREE_STATIC_LIB ON)
 
 add_subdirectory(embree)
 
