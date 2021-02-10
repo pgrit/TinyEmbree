@@ -19,7 +19,7 @@ target_sources(TinyEmbreeCore
         "scene.cpp"
 )
 
-The embree shared library will be in the same folder
+# The embree shared library will be in the same folder
 if(WIN32)
 elseif(APPLE)
     set_target_properties(TinyEmbreeCore
