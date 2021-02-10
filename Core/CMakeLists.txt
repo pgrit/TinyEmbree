@@ -22,13 +22,17 @@ target_sources(TinyEmbreeCore
 # The embree shared library will be in the same folder
 if(WIN32)
 elseif(APPLE)
-    set(CMAKE_MACOSX_RPATH ON)
-    set(CMAKE_BUILD_RPATH "@rpath")
+    set_target_properties(TinyEmbreeCore
+        PROPERTIES
+            INSTALL_RPATH "@rpath"
+            MACOSX_RPATH ON
+            BUILD_WITH_INSTALL_RPATH ON)
 else()
-    set(CMAKE_BUILD_RPATH "$ORIGIN")
+    set_target_properties(TinyEmbreeCore
+        PROPERTIES
+            INSTALL_RPATH "$ORIGIN"
+            BUILD_WITH_INSTALL_RPATH ON)
 endif()
-
-message(${CMAKE_BUILD_RPATH})
 
 target_link_libraries(TinyEmbreeCore PRIVATE embree)
 
