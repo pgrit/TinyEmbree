@@ -26,7 +26,6 @@ elseif(APPLE)
         PROPERTIES
             # INSTALL_RPATH "@rpath"
             INSTALL_RPATH "@loader_path"
-            MACOSX_RPATH ON
             BUILD_WITH_INSTALL_RPATH ON)
 else()
     set_target_properties(TinyEmbreeCore
