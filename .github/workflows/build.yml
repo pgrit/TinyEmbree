@@ -30,6 +30,9 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: cmake --build . --config Release
 
+    - working-directory: ${{github.workspace}}/Runtimes
+      run: otool -L libTinyEmbreeCore.dylib
+
     # fixes sporadic build fails on Windows (https://github.com/actions/setup-dotnet/issues/155)
     - name: Clean
       run: dotnet clean -c Release && dotnet nuget locals all --clear
