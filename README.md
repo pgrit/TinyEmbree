@@ -1,54 +1,13 @@
-# TinyEmbree
-
-A very simple C# wrapper around the [Embree](https://www.embree.org/) ray tracing kernels. Currently only supports simple triangle meshes with no motion blur etc.
-
+![Build](https://github.com/pgrit/TinyEmbree/workflows/Build/badge.svg)
 <a href="https://www.nuget.org/packages/TinyEmbree/">
 <img src="https://buildstats.info/nuget/TinyEmbree" />
 </a>
 
-## Dependencies
+# TinyEmbree
 
-- [.NET 5.0](https://dotnet.microsoft.com/) (or newer)
-- a C++11 (or newer) compiler
-- CMake
-- Embree3
-- TBB
-
-You can install them with a package manager of your choice, but you need to make sure that they can be found by CMake. A simple solution is to use [vcpkg](https://github.com/microsoft/vcpkg):
-
-```
-vcpkg install embree3
-```
-
-## Building on Windows and Linux
-
-First, we need to compile the C++ dependency wrapper. The process is the usual:
-
-```
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . --config Release
-```
-
-The .dll / .so files will be copied to the `Dist` folder. 
-Note that, currently in order to create the Nuget package, you might need to copy the Embree or TBB .so files manually to the Dist folder.
-
-To compile and run the tests (optional):
-```
-dotnet test
-```
-
-That's it. Simply add a reference to `TinyEmbree/TinyEmbree.csproj` to your project and you should be up and running.
-
-## Building on other platforms
-
-In theory, the package works on any platform.
-However, the native dependencies have to be built for each.
-Currently, the workflow has been set up and tested for x86-64 versions of Windows, Linux (Ubuntu 20.04) and macOS 10.15.
-Other platforms need to be built from source.
-For these, the [TinyEmbree.csproj](TinyEmbree/TinyEmbree.csproj) file needs to be adjusted, instructions can be found in the comments of that file.
-The process should be a simple copy&paste operation, provided nothing goes south when building the C++ library.
+A very simple C# wrapper around the [Embree](https://www.embree.org/) ray tracing kernels. Currently only supports simple triangle meshes with no motion blur etc.
+Embree and our wrapper are automatically compiled for x86-64 Windows, Linux, and macOS, with support for AVX and AVX2. On these platforms, you can directly use the [Nuget package](https://www.nuget.org/packages/TinyEmbree/).
+Other platforms need to compile from source, instructions are below.
 
 ## Usage example
 
@@ -82,3 +41,40 @@ if (hit) {
     Console.WriteLine($"Hit: {hit.PrimId}, {hit.Distance}");
 }
 ```
+
+## Dependencies
+
+- [.NET 5.0](https://dotnet.microsoft.com/) (or newer)
+- a C++11 (or newer) compiler
+- CMake
+
+Embree is included as a submodule, so make sure to clone using `--recursive`, or run
+
+```
+git submodule update --init --recursive
+```
+
+## Building the C++ wrapper
+
+The process is the usual:
+
+```
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --config Release
+```
+
+The .dll / .so / .dylib files will be copied to the `Runtimes` folder. 
+
+## Testing the C# wrapper
+
+The `TinyEmbree/TinyEmbree.csproj` project file automatically copies the shared libraries from the `Runtimes` directory.
+If you are compiling on a platform other than x86-64 Linux, Windows, or macOS, you need to add entries with the correct runtime identifiers [to the project file](TinyEmbree/TinyEmbree.csproj). The correct RID can be found here: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
+
+To compile and run the tests:
+```
+dotnet test
+```
+
+That's it. Simply add a reference to `TinyEmbree/TinyEmbree.csproj` to your project and you should be up and running.
