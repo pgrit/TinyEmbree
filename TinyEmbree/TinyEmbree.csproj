@@ -31,11 +31,6 @@
 			Pack="true"
 			PackagePath="runtimes/win-x64/native/"
       Condition="Exists('../Runtimes/embree3.dll')"/>
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/tbb.dll"
-			Pack="true"
-			PackagePath="runtimes/win-x64/native/"
-      Condition="Exists('../Runtimes/tbb.dll')"/>
 
     <Content CopyToOutputDirectory="Always"
 			Include="../Runtimes/libTinyEmbreeCore.so"
@@ -43,15 +38,10 @@
 			PackagePath="runtimes/linux-x64/native/"
       Condition="Exists('../Runtimes/libTinyEmbreeCore.so')"/>
     <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/libembree3.so.3"
+			Include="../Runtimes/lib/libembree3.so.3"
 			Pack="true"
 			PackagePath="runtimes/linux-x64/native/"
-      Condition="Exists('../Runtimes/libembree3.so.3')"/>
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/libtbb.so.2"
-			Pack="true"
-			PackagePath="runtimes/linux-x64/native/"
-      Condition="Exists('../Runtimes/libtbb.so.2')"/>
+      Condition="Exists('../Runtimes/lib/libembree3.so.3')"/>
 
     <Content CopyToOutputDirectory="Always"
 			Include="../Runtimes/libTinyEmbreeCore.dylib"
@@ -59,15 +49,10 @@
 			PackagePath="runtimes/osx-x64/native/"
       Condition="Exists('../Runtimes/libTinyEmbreeCore.dylib')"/>
     <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/libembree3.3.dylib"
+			Include="../Runtimes/lib/libembree3.3.dylib"
 			Pack="true"
 			PackagePath="runtimes/osx-x64/native/"
-      Condition="Exists('../Runtimes/libembree3.3.dylib')"/>
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/libtbb.dylib"
-			Pack="true"
-			PackagePath="runtimes/osx-x64/native/"
-      Condition="Exists('../Runtimes/libtbb.dylib')"/>
+      Condition="Exists('../Runtimes/lib/libembree3.3.dylib')"/>
   </ItemGroup>
 
   <ItemGroup>

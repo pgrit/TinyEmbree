@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ macos-latest ] #, ubuntu-latest, windows-latest]
+        os: [ macos-latest, ubuntu-latest, windows-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -33,8 +33,6 @@ jobs:
     - name: Install
       working-directory: ${{github.workspace}}/build
       run: cmake --install .
-      
-    - run: ls -R
 
     # fixes sporadic build fails on Windows (https://github.com/actions/setup-dotnet/issues/155)
     - name: Clean
@@ -44,43 +42,43 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         path: ${{github.workspace}}/Runtimes/*
-        
+
     - name: Test
       working-directory: ${{github.workspace}}
       run: dotnet test
 
-#   pack:
-#     runs-on: ubuntu-latest
-#     needs: [build]
+  pack:
+    runs-on: ubuntu-latest
+    needs: [build]
 
-#     steps:
-#     - uses: actions/checkout@v2
+    steps:
+    - uses: actions/checkout@v2
 
-#     - uses: actions/download-artifact@v2
-#       with:
-#         name: artifact
-#         path: ${{github.workspace}}/Runtimes
-#     - run: ls -R
+    - uses: actions/download-artifact@v2
+      with:
+        name: artifact
+        path: ${{github.workspace}}/Runtimes
+    - run: ls -R
 
-#     - name: Setup .NET Core SDK
-#       uses: actions/setup-dotnet@v1.7.2
-#       with:
-#         dotnet-version: '5.0.x'
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1.7.2
+      with:
+        dotnet-version: '5.0.x'
 
-#     # fixes sporadic build fails on Windows (https://github.com/actions/setup-dotnet/issues/155)
-#     - name: Clean
-#       run: dotnet clean -c Release && dotnet nuget locals all --clear
+    # fixes sporadic build fails on Windows (https://github.com/actions/setup-dotnet/issues/155)
+    - name: Clean
+      run: dotnet clean -c Release && dotnet nuget locals all --clear
 
-#     - name: Pack
-#       run: dotnet pack -c Release
+    - name: Pack
+      run: dotnet pack -c Release
 
-#     - name: Upload .nupkg
-#       uses: actions/upload-artifact@v2
-#       with:
-#         path: ${{github.workspace}}/TinyEmbree/bin/**/*.nupkg
+    - name: Upload .nupkg
+      uses: actions/upload-artifact@v2
+      with:
+        path: ${{github.workspace}}/TinyEmbree/bin/**/*.nupkg
 
-#     - name: Publish on version change
-#       uses: rohith/publish-nuget@v2
-#       with:
-#         PROJECT_FILE_PATH: TinyEmbree/TinyEmbree.csproj
-#         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    - name: Publish on version change
+      uses: rohith/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: TinyEmbree/TinyEmbree.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}

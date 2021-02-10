@@ -14,14 +14,12 @@ set(EMBREE_GEOMETRY_USER          OFF CACHE BOOL " " FORCE)
 # We don't bother compiling and linking TBB
 set(EMBREE_TASKING_SYSTEM         "INTERNAL" CACHE STRING " " FORCE)
 
-# Enable only AVX2 so we can build a static lib for macOS (also faster build overall)
+# Enable only AVX2 for faster github actions deployment
 set(EMBREE_MAX_ISA                "NONE" CACHE STRING " " FORCE)
 set(EMBREE_ISA_AVX2               ON  CACHE BOOL " " FORCE)
 set(EMBREE_ISA_SSE2               OFF CACHE BOOL " " FORCE)
 set(EMBREE_ISA_SSE42              OFF CACHE BOOL " " FORCE)
 set(EMBREE_ISA_AVX512             OFF CACHE BOOL " " FORCE)
 set(EMBREE_ISA_AVX                OFF CACHE BOOL " " FORCE)
-
-# set(EMBREE_STATIC_LIB             ON  CACHE BOOL " " FORCE)
 
 add_subdirectory(embree)
