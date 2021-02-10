@@ -22,6 +22,6 @@ set(EMBREE_ISA_SSE42              OFF CACHE BOOL " " FORCE)
 set(EMBREE_ISA_AVX512             OFF CACHE BOOL " " FORCE)
 set(EMBREE_ISA_AVX                OFF CACHE BOOL " " FORCE)
 
-set(EMBREE_STATIC_LIB             ON  CACHE BOOL " " FORCE)
+# set(EMBREE_STATIC_LIB             ON  CACHE BOOL " " FORCE)
 
 add_subdirectory(embree)
