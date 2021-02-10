@@ -10,6 +10,8 @@ jobs:
         os: [ macos-latest ] #, ubuntu-latest, windows-latest]
 
     steps:
+    - run: sysctl -a | grep machdep.cpu.leaf7_features
+      
     - uses: actions/checkout@v2
       with:
         submodules: recursive
