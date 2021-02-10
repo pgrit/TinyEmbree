@@ -5,7 +5,7 @@ namespace TinyEmbree {
 
     public class TriangleMesh {
         public TriangleMesh(Vector3[] vertices, int[] indices, Vector3[] shadingNormals = null,
-                    Vector2[] textureCoordinates = null) {
+                            Vector2[] textureCoordinates = null) {
             Vertices = vertices;
             Indices = indices;
 
