@@ -32,6 +32,8 @@ jobs:
 
     - working-directory: ${{github.workspace}}/Runtimes
       run: otool -L libTinyEmbreeCore.dylib
+    - working-directory: ${{github.workspace}}/Runtimes
+      run: otool -L libembree3.3.dylib
 
     # fixes sporadic build fails on Windows (https://github.com/actions/setup-dotnet/issues/155)
     - name: Clean
@@ -44,7 +46,7 @@ jobs:
 
     - name: Test
       working-directory: ${{github.workspace}}
-      run: DYLD_PRINT_LIBRARIES=1 dotnet test
+      run: dotnet test
 
   pack:
     runs-on: ubuntu-latest
