@@ -19,13 +19,13 @@ target_sources(TinyEmbreeCore
         "scene.cpp"
 )
 
-# libtbb and libembree are located in the same folder
-# IF(WIN32)
-# ELSEIF(APPLE)
-#   SET_TARGET_PROPERTIES(TinyEmbreeCore PROPERTIES INSTALL_RPATH "@rpath")
-# ELSE()
-#   SET_TARGET_PROPERTIES(TinyEmbreeCore PROPERTIES INSTALL_RPATH "$ORIGIN")
-# ENDIF()
+# The embree shared library will be in the same folder
+IF(WIN32)
+ELSEIF(APPLE)
+  SET_TARGET_PROPERTIES(TinyEmbreeCore PROPERTIES BUILD_RPATH "@rpath")
+ELSE()
+  SET_TARGET_PROPERTIES(TinyEmbreeCore PROPERTIES INSTALL_RPATH "$ORIGIN")
+ENDIF()
 
 target_link_libraries(TinyEmbreeCore PRIVATE embree)
 
