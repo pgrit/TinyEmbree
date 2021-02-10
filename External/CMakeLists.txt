@@ -23,3 +23,27 @@ set(EMBREE_ISA_AVX512             OFF CACHE BOOL " " FORCE)
 set(EMBREE_ISA_AVX                OFF CACHE BOOL " " FORCE)
 
 add_subdirectory(embree)
+
+get_directory_property(EMBREE_VERSION_MAJOR
+    DIRECTORY embree
+    DEFINITION EMBREE_VERSION_MAJOR)
+
+IF (WIN32)
+    SET(embree_filename ${CMAKE_IMPORT_LIBRARY_PREFIX}${EMBREE_LIBRARY_NAME}${CMAKE_IMPORT_LIBRARY_SUFFIX})
+ELSEIF (APPLE)
+    SET(embree_filename ${CMAKE_SHARED_LIBRARY_PREFIX}${EMBREE_LIBRARY_NAME}.${EMBREE_VERSION_MAJOR}${CMAKE_SHARED_LIBRARY_SUFFIX})
+ELSE()
+    SET(embree_filename ${CMAKE_SHARED_LIBRARY_PREFIX}${EMBREE_LIBRARY_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}.${EMBREE_VERSION_MAJOR})
+ENDIF()
+
+message(${embree_filename})
+
+# Create a command to copy the file, and a target that depends on the copy
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/../Runtimes/${embree_filename}
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:embree> ${CMAKE_CURRENT_SOURCE_DIR}/../Runtimes/${embree_filename}
+    DEPENDS embree
+)
+add_custom_target(copy_files ALL
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../Runtimes/${embree_filename}
+)

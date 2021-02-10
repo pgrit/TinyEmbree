@@ -38,10 +38,10 @@
 			PackagePath="runtimes/linux-x64/native/"
       Condition="Exists('../Runtimes/libTinyEmbreeCore.so')"/>
     <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/lib/libembree3.so.3"
+			Include="../Runtimes/libembree3.so.3"
 			Pack="true"
 			PackagePath="runtimes/linux-x64/native/"
-      Condition="Exists('../Runtimes/lib/libembree3.so.3')"/>
+      Condition="Exists('../Runtimes/libembree3.so.3')"/>
 
     <Content CopyToOutputDirectory="Always"
 			Include="../Runtimes/libTinyEmbreeCore.dylib"
@@ -49,10 +49,10 @@
 			PackagePath="runtimes/osx-x64/native/"
       Condition="Exists('../Runtimes/libTinyEmbreeCore.dylib')"/>
     <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/lib/libembree3.3.dylib"
+			Include="../Runtimes/libembree3.3.dylib"
 			Pack="true"
 			PackagePath="runtimes/osx-x64/native/"
-      Condition="Exists('../Runtimes/lib/libembree3.3.dylib')"/>
+      Condition="Exists('../Runtimes/libembree3.3.dylib')"/>
   </ItemGroup>
 
   <ItemGroup>

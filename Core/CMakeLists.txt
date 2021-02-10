@@ -36,6 +36,8 @@ set_target_properties(TinyEmbreeCore
         CXX_EXTENSIONS NO
 )
 
-install(TARGETS TinyEmbreeCore
-    DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/../Runtimes
-)
+add_custom_command(
+    TARGET TinyEmbreeCore POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+        $<TARGET_FILE:TinyEmbreeCore>
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Runtimes/ )
