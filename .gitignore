@@ -13,3 +13,7 @@ obj
 
 # Compiled shared libraries
 Runtimes/*
+
+# Extracted test meshes (we only commit the .zip archives)
+Data/*
+!Data/*.zip
