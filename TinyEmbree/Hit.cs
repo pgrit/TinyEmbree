@@ -10,8 +10,7 @@ namespace TinyEmbree {
         public float ErrorOffset;
         public float Distance;
 
-        public static implicit operator bool(Hit hit)
-            => hit.Mesh != null;
+        public static implicit operator bool(Hit hit) => hit.Mesh != null;
 
         public Vector3 ShadingNormal => Mesh.ComputeShadingNormal((int)PrimId, BarycentricCoords);
 
