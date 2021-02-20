@@ -29,6 +29,10 @@ namespace TinyEmbree {
         public static extern void TraceSingle(IntPtr scene, in Ray ray, out MinimalHitInfo hit);
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool IsOccluded(IntPtr scene, in Ray ray, float maxDistance);
+
+        [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DeleteScene(IntPtr scene);
     }
 }

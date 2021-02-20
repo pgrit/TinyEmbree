@@ -90,12 +90,8 @@ namespace TinyEmbree {
             return new ShadowRay(ray, float.MaxValue);
         }
 
-        public bool IsOccluded(ShadowRay ray) {
-            // TODO use a proper optimized method here that does not compute the actual closest hit.
-            var p = Trace(ray.Ray);
-            bool occluded = p.Mesh != null && p.Distance < ray.MaxDistance;
-            return occluded;
-        }
+        public bool IsOccluded(ShadowRay ray)
+        => TinyEmbreeCore.IsOccluded(scene, in ray.Ray, ray.MaxDistance);
 
         public bool IsOccluded(Hit from, Hit to) {
             var ray = MakeShadowRay(from, to);

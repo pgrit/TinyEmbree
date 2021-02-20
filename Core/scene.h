@@ -25,6 +25,8 @@ public:
 
     Hit Intersect(const Ray& ray);
 
+    bool IsOccluded(const Ray& ray, float maxDistance);
+
 private:
     bool isInit = false;
     bool isFinal = false;

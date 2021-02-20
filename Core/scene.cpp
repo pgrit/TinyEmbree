@@ -82,4 +82,25 @@ Hit Scene::Intersect(const Ray& ray) {
     return hit;
 }
 
+bool Scene::IsOccluded(const Ray& ray, float maxDistance) {
+    struct RTCIntersectContext context;
+    rtcInitIntersectContext(&context);
+
+    struct RTCRay rtcray;
+    rtcray.org_x = ray.origin.x;
+    rtcray.org_y = ray.origin.y;
+    rtcray.org_z = ray.origin.z;
+    rtcray.dir_x = ray.direction.x;
+    rtcray.dir_y = ray.direction.y;
+    rtcray.dir_z = ray.direction.z;
+    rtcray.tnear = ray.minDistance;
+    rtcray.tfar = maxDistance;
+    rtcray.mask = 0;
+    rtcray.flags = 0;
+
+    rtcOccluded1(embreeScene, &context, &rtcray);
+
+    return rtcray.tfar < maxDistance;
+}
+
 } // namespace tinyembree
