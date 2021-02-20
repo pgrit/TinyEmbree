@@ -7,7 +7,10 @@ namespace TinyEmbree {
         IntPtr scene;
 
         protected void Free() {
-            if (scene != IntPtr.Zero) TinyEmbreeCore.DeleteScene(scene);
+            if (scene != IntPtr.Zero) {
+                TinyEmbreeCore.DeleteScene(scene);
+                scene = IntPtr.Zero;
+            }
         }
 
         ~Raytracer() => Free();
