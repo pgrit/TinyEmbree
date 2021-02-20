@@ -39,7 +39,7 @@ TINY_EMBREE_API int AddTriangleMesh(void* scene, const float* vertices, int numV
 
 TINY_EMBREE_API void FinalizeScene(void* scene);
 
-TINY_EMBREE_API Hit TraceSingle(void* scene, Ray ray);
+TINY_EMBREE_API void TraceSingle(void* scene, const Ray* ray, Hit* hit);
 
 TINY_EMBREE_API void DeleteScene(void* scene);
 

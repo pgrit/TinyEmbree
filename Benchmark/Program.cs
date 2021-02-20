@@ -46,6 +46,28 @@ namespace Benchmark {
             }
             stop.Stop();
             Console.WriteLine($"One million rays intersected in {stop.ElapsedMilliseconds / numTrials}ms");
+            long traceCost = stop.ElapsedMilliseconds / numTrials;
+
+            stop = Stopwatch.StartNew();
+            for (int k = 0; k < numTrials; ++k) {
+                for (int i = 0; i < 1000000; ++i) {
+                    new Vector3 (
+                        (float) rng.NextDouble(),
+                        (float) rng.NextDouble(),
+                        (float) rng.NextDouble()
+                    );
+                    new Vector3 (
+                        (float) rng.NextDouble(),
+                        (float) rng.NextDouble(),
+                        (float) rng.NextDouble()
+                    );
+                }
+            }
+            stop.Stop();
+            Console.WriteLine($"RNG overhead: {stop.ElapsedMilliseconds / numTrials}ms");
+            long rngCost = stop.ElapsedMilliseconds / numTrials;
+
+            Console.WriteLine($"Pure cost for tracing + overhead: {traceCost-rngCost}ms");
         }
 
         static void ComplexScene(int numTrials) {

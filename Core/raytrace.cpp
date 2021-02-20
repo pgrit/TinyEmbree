@@ -20,9 +20,9 @@ TINY_EMBREE_API void FinalizeScene(void* scene) {
     scn->Finalize();
 }
 
-TINY_EMBREE_API Hit TraceSingle(void* scene, Ray ray) {
+TINY_EMBREE_API void TraceSingle(void* scene, const Ray* ray, Hit* hit) {
     auto scn = (tinyembree::Scene*) scene;
-    return scn->Intersect(ray);
+    *hit = scn->Intersect(*ray);
 }
 
 TINY_EMBREE_API void DeleteScene(void* scene) {

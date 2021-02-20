@@ -26,7 +26,7 @@ namespace TinyEmbree {
 #pragma warning restore CS0649 // The field is never assigned to
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
-        public static extern MinimalHitInfo TraceSingle(IntPtr scene, Ray ray);
+        public static extern void TraceSingle(IntPtr scene, in Ray ray, out MinimalHitInfo hit);
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DeleteScene(IntPtr scene);

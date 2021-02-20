@@ -28,7 +28,8 @@ namespace TinyEmbree {
         }
 
         public Hit Trace(Ray ray) {
-            var minHit = TinyEmbreeCore.TraceSingle(scene, ray);
+            TinyEmbreeCore.MinimalHitInfo minHit;
+            TinyEmbreeCore.TraceSingle(scene, in ray, out minHit);
 
             if (minHit.meshId == uint.MaxValue)
                 return new Hit();
