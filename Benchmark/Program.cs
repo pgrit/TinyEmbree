@@ -27,7 +27,7 @@ namespace Benchmark {
             rt.AddMesh(mesh);
             rt.CommitScene();
 
-            Random rng = new();
+            Random rng = new(1337);
             Stopwatch stop = Stopwatch.StartNew();
             for (int k = 0; k < numTrials; ++k) {
                 for (int i = 0; i < 1000000; ++i) {
@@ -91,7 +91,7 @@ namespace Benchmark {
 
             Console.WriteLine($"Acceleration structures built in {stop.ElapsedMilliseconds}ms");
 
-            Random rng = new();
+            Random rng = new(1337);
             Vector3 NextVector() => new Vector3 (
                 (float) rng.NextDouble(),
                 (float) rng.NextDouble(),
