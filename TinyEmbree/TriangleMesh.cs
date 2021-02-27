@@ -67,9 +67,10 @@ namespace TinyEmbree {
             var v2 = shadingNormals[Indices[faceIdx * 3 + 1]];
             var v3 = shadingNormals[Indices[faceIdx * 3 + 2]];
 
-            return barycentric.X * v2
-                +  barycentric.Y * v3
-                + (1 - barycentric.X - barycentric.Y) * v1;
+            return Vector3.Normalize(
+                barycentric.X * v2
+                + barycentric.Y * v3
+                + (1 - barycentric.X - barycentric.Y) * v1);
         }
 
         public Vector3 ComputePosition(int faceIdx, Vector2 barycentric) {
