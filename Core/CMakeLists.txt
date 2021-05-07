@@ -24,7 +24,6 @@ if(WIN32)
 elseif(APPLE)
     set_target_properties(TinyEmbreeCore
         PROPERTIES
-            # INSTALL_RPATH "@rpath"
             INSTALL_RPATH "@loader_path"
             BUILD_WITH_INSTALL_RPATH ON)
 else()
