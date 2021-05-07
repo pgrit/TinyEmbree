@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace TinyEmbree {
     public class Raytracer : IDisposable {
         IntPtr scene;
+        bool isReady = false;
 
         protected void Free() {
             if (scene != IntPtr.Zero) {
@@ -28,9 +30,12 @@ namespace TinyEmbree {
 
         public void CommitScene() {
             TinyEmbreeCore.FinalizeScene(scene);
+            isReady = true;
         }
 
         public Hit Trace(Ray ray) {
+            Debug.Assert(isReady);
+
             TinyEmbreeCore.MinimalHitInfo minHit;
             TinyEmbreeCore.TraceSingle(scene, in ray, out minHit);
 
@@ -93,8 +98,10 @@ namespace TinyEmbree {
             return new ShadowRay(ray, float.MaxValue);
         }
 
-        public bool IsOccluded(ShadowRay ray)
-        => TinyEmbreeCore.IsOccluded(scene, in ray.Ray, ray.MaxDistance);
+        public bool IsOccluded(ShadowRay ray) {
+            Debug.Assert(isReady);
+            return TinyEmbreeCore.IsOccluded(scene, in ray.Ray, ray.MaxDistance);
+        }
 
         public bool IsOccluded(Hit from, Hit to) {
             var ray = MakeShadowRay(from, to);
