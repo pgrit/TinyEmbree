@@ -17,48 +17,27 @@
     <TargetFramework>net5.0</TargetFramework>
     <!-- Each additional platform requires an entry here, once the native binaries have been added below -->
     <RuntimeIdentifiers>win10-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- Each additional platform requires an entry here, to copy the corresponding native binaries -->
   <ItemGroup>
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/TinyEmbreeCore.dll"
-			Pack="true"
-			PackagePath="runtimes/win-x64/native/"
-      Condition="Exists('../Runtimes/TinyEmbreeCore.dll')"/>
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/embree3.dll"
-			Pack="true"
-			PackagePath="runtimes/win-x64/native/"
-      Condition="Exists('../Runtimes/embree3.dll')"/>
+    <Content CopyToOutputDirectory="Always" Include="../Runtimes/TinyEmbreeCore.dll" Pack="true" PackagePath="runtimes/win-x64/native/" Condition="Exists('../Runtimes/TinyEmbreeCore.dll')" />
+    <Content CopyToOutputDirectory="Always" Include="../Runtimes/embree3.dll" Pack="true" PackagePath="runtimes/win-x64/native/" Condition="Exists('../Runtimes/embree3.dll')" />
 
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/libTinyEmbreeCore.so"
-			Pack="true"
-			PackagePath="runtimes/linux-x64/native/"
-      Condition="Exists('../Runtimes/libTinyEmbreeCore.so')"/>
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/libembree3.so.3"
-			Pack="true"
-			PackagePath="runtimes/linux-x64/native/"
-      Condition="Exists('../Runtimes/libembree3.so.3')"/>
+    <Content CopyToOutputDirectory="Always" Include="../Runtimes/libTinyEmbreeCore.so" Pack="true" PackagePath="runtimes/linux-x64/native/" Condition="Exists('../Runtimes/libTinyEmbreeCore.so')" />
+    <Content CopyToOutputDirectory="Always" Include="../Runtimes/libembree3.so.3" Pack="true" PackagePath="runtimes/linux-x64/native/" Condition="Exists('../Runtimes/libembree3.so.3')" />
 
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/libTinyEmbreeCore.dylib"
-			Pack="true"
-			PackagePath="runtimes/osx-x64/native/"
-      Condition="Exists('../Runtimes/libTinyEmbreeCore.dylib')"/>
-    <Content CopyToOutputDirectory="Always"
-			Include="../Runtimes/libembree3.3.dylib"
-			Pack="true"
-			PackagePath="runtimes/osx-x64/native/"
-      Condition="Exists('../Runtimes/libembree3.3.dylib')"/>
+    <Content CopyToOutputDirectory="Always" Include="../Runtimes/libTinyEmbreeCore.dylib" Pack="true" PackagePath="runtimes/osx-x64/native/" Condition="Exists('../Runtimes/libTinyEmbreeCore.dylib')" />
+    <Content CopyToOutputDirectory="Always" Include="../Runtimes/libembree3.3.dylib" Pack="true" PackagePath="runtimes/osx-x64/native/" Condition="Exists('../Runtimes/libembree3.3.dylib')" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../LICENSE" Pack="true" PackagePath=""/>
-    <None Include="../THIRDPARTIES.txt" Pack="true" PackagePath=""/>
-    <None Include="../README.md" Pack="true" PackagePath=""/>
+    <None Include="../LICENSE" Pack="true" PackagePath="" />
+    <None Include="../THIRDPARTIES.txt" Pack="true" PackagePath="" />
+    <None Include="../README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>

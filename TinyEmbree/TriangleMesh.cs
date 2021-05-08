@@ -2,16 +2,27 @@
 using System.Numerics;
 
 namespace TinyEmbree {
-
+    /// <summary>
+    /// A simple triangle mesh that can be sent to Embree for ray tracing
+    /// </summary>
     public class TriangleMesh {
+        /// <summary>
+        /// Creates a new mesh from the given vertices, indices, and optional parameters
+        /// </summary>
+        /// <param name="vertices">Array of triangle vertices</param>
+        /// <param name="indices">Array of indices, three for each triangle</param>
+        /// <param name="shadingNormals">
+        ///     Optional: shading normals at each vertex. If given, needs to have the same length as vertices
+        /// </param>
+        /// <param name="textureCoordinates">
+        ///     Optional: texture coordinates at each vertex. If given, needs to have the same length as vertices
+        /// </param>
         public TriangleMesh(Vector3[] vertices, int[] indices, Vector3[] shadingNormals = null,
                             Vector2[] textureCoordinates = null) {
             Vertices = vertices;
             Indices = indices;
 
             Debug.Assert(indices.Length % 3 == 0, "Triangle mesh indices must be a multiple of three.");
-            NumFaces = indices.Length / 3;
-            NumVertices = vertices.Length;
 
             // Compute face normals and triangle areas
             FaceNormals = new Vector3[NumFaces];
@@ -49,6 +60,14 @@ namespace TinyEmbree {
             }
         }
 
+        /// <summary>
+        /// Computes the texture coordinates from the barycentric coordinates of a triangle
+        /// </summary>
+        /// <param name="faceIdx">
+        ///     The index of the triangle within the mesh (based on the indices passed to the constructor)
+        /// </param>
+        /// <param name="barycentric">Barycentric coordinates within that triangle</param>
+        /// <returns>Texture coordinates</returns>
         public Vector2 ComputeTextureCoordinates(int faceIdx, Vector2 barycentric) {
             if (textureCoordinates == null)
                 return new Vector2(0, 0);
@@ -62,6 +81,14 @@ namespace TinyEmbree {
                 + (1 - barycentric.X - barycentric.Y) * v1;
         }
 
+        /// <summary>
+        /// Computes the shading normal from the barycentric coordinates of a triangle
+        /// </summary>
+        /// <param name="faceIdx">
+        ///     The index of the triangle within the mesh (based on the indices passed to the constructor)
+        /// </param>
+        /// <param name="barycentric">Barycentric coordinates within that triangle</param>
+        /// <returns>Shading normal</returns>
         public Vector3 ComputeShadingNormal(int faceIdx, Vector2 barycentric) {
             var v1 = shadingNormals[Indices[faceIdx * 3 + 0]];
             var v2 = shadingNormals[Indices[faceIdx * 3 + 1]];
@@ -73,6 +100,14 @@ namespace TinyEmbree {
                 + (1 - barycentric.X - barycentric.Y) * v1);
         }
 
+        /// <summary>
+        /// Computes the world space position from the barycentric coordinates of a triangle
+        /// </summary>
+        /// <param name="faceIdx">
+        ///     The index of the triangle within the mesh (based on the indices passed to the constructor)
+        /// </param>
+        /// <param name="barycentric">Barycentric coordinates within that triangle</param>
+        /// <returns>World space position</returns>
         public Vector3 ComputePosition(int faceIdx, Vector2 barycentric) {
             var v1 = Vertices[Indices[faceIdx * 3 + 0]];
             var v2 = Vertices[Indices[faceIdx * 3 + 1]];
@@ -83,16 +118,39 @@ namespace TinyEmbree {
                 + (1 - barycentric.X - barycentric.Y) * v1;
         }
 
+        /// <summary>
+        /// Vertices of the triangles
+        /// </summary>
         public Vector3[] Vertices;
+
+        /// <summary>
+        /// Indices of the triangles
+        /// </summary>
         public int[] Indices;
+
+        /// <summary>
+        /// Actual geometric normals of each triangle (group of three indices). 
+        /// Pre-computed by the constructor.
+        /// </summary>
         public Vector3[] FaceNormals;
+
+        /// <summary>
+        /// Total surface area of the entire mesh, pre-computed by the constructor.
+        /// </summary>
         public float SurfaceArea;
 
-        public int NumVertices { get; private set; }
-        public int NumFaces { get; private set; }
+        /// <summary>
+        /// Number of vertices in the mesh
+        /// </summary>
+        public int NumVertices => Vertices.Length;
+
+        /// <summary>
+        /// Number of triangles in the mesh
+        /// </summary>
+        public int NumFaces => Indices.Length / 3;
 
         // per-vertex attributes
-        Vector3[] shadingNormals;
-        Vector2[] textureCoordinates;
+        readonly Vector3[] shadingNormals;
+        readonly Vector2[] textureCoordinates;
     }
 }

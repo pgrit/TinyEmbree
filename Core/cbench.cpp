@@ -1,4 +1,6 @@
 #include "raytrace.h"
+#include "point_query.h"
+
 #include <iostream>
 #include <chrono>
 #include <cstdlib>
@@ -11,7 +13,7 @@ Vector3 NextRandom3() {
     };
 }
 
-int main() {
+void PinvokeOverhead() {
     // Intersects the same simple quad scene as the C# overhead benchmark.
     // Difference between the two is due to the PInvoke overhead in C#
 
@@ -70,5 +72,28 @@ int main() {
     std::cout << "Pure cost for tracing + overhead: " << totalCost - rngCost << "ms." << std::endl;
 
     DeleteScene(sceneHandle);
+}
+
+void KnnTest() {
+    std::cout << "Starting simple knn query" << std::endl;
+
+    tinyembree::PointQuery query;
+    std::vector<Point> coords;
+    for (int i = 0; i < 100; ++i) {
+        coords.push_back({3.f * i, 3.f * i + 1, 3.f * i + 2});
+    }
+
+    query.SetPoints(coords.data(), coords.size() / 3);
+
+    tinyembree::KNNResult result { 100 };
+    Point pos{1, 1, 1};
+    query.KnnQuery(&pos, 3, &result);
+
+    std::cout << "Done: " << result.knn.size() << " found" << std::endl;
+}
+
+int main() {
+    PinvokeOverhead();
+    KnnTest();
     return 0;
 }

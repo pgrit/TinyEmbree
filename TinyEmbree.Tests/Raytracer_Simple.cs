@@ -19,22 +19,21 @@ namespace SeeSharp.Core.Tests.Geometry {
                 0, 2, 3
             };
 
-            TriangleMesh mesh = new TriangleMesh(vertices, indices);
+            TriangleMesh mesh = new(vertices, indices);
 
-            using (var rt = new Raytracer()) {
-                rt.AddMesh(mesh);
-                rt.CommitScene();
+            using var rt = new Raytracer(); 
+            rt.AddMesh(mesh);
+            rt.CommitScene();
 
-                Hit hit = rt.Trace(new Ray {
-                    Origin = new Vector3(-0.5f, -10, 0),
-                    Direction = new Vector3(0, 1, 0),
-                    MinDistance = 1.0f
-                });
+            Hit hit = rt.Trace(new Ray {
+                Origin = new Vector3(-0.5f, -10, 0),
+                Direction = new Vector3(0, 1, 0),
+                MinDistance = 1.0f
+            });
 
-                Assert.Equal(10.0f, hit.Distance, 0);
-                Assert.Equal(1u, hit.PrimId);
-                Assert.Equal(mesh, hit.Mesh);
-            };
+            Assert.Equal(10.0f, hit.Distance, 0);
+            Assert.Equal(1u, hit.PrimId);
+            Assert.Equal(mesh, hit.Mesh);
         }
 
         [Fact]
@@ -51,20 +50,19 @@ namespace SeeSharp.Core.Tests.Geometry {
                 0, 2, 3
             };
 
-            TriangleMesh mesh = new TriangleMesh(vertices, indices);
+            TriangleMesh mesh = new(vertices, indices);
 
-            using (var rt = new Raytracer()) {
-                rt.AddMesh(mesh);
-                rt.CommitScene();
+            using Raytracer rt = new(); 
+            rt.AddMesh(mesh);
+            rt.CommitScene();
 
-                Hit hit = rt.Trace(new Ray {
-                    Origin = new Vector3(-0.5f, -10, 0),
-                    Direction = new Vector3(0, -1, 0),
-                    MinDistance = 1.0f
-                });
+            Hit hit = rt.Trace(new Ray {
+                Origin = new Vector3(-0.5f, -10, 0),
+                Direction = new Vector3(0, -1, 0),
+                MinDistance = 1.0f
+            });
 
-                Assert.False(hit);
-            }
+            Assert.False(hit);
         }
     }
 }

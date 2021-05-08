@@ -2,9 +2,9 @@
 
 #include <vector>
 #include <memory>
-#include <embree3/rtcore.h>
 
 #include "raytrace.h"
+#include "common.h"
 
 namespace tinyembree {
 

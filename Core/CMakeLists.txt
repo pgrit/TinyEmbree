@@ -11,12 +11,19 @@ target_include_directories(TinyEmbreeCore PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_sources(TinyEmbreeCore
     PUBLIC
+        "api.h"
         "raytrace.h"
+        "knn.h"
 
     PRIVATE
+        "common.h"
+
         "raytrace.cpp"
         "scene.h"
         "scene.cpp"
+
+        "knn.cpp"
+        "point_query.h"
 )
 
 # The embree shared library will be in the same folder
