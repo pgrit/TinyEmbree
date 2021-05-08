@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <cassert>
+#include <cmath>
 #include <iostream>
 
 #include <embree3/rtcore.h>
