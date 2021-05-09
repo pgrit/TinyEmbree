@@ -26,8 +26,6 @@ set(EMBREE_ISA_AVX                ON  CACHE BOOL " " FORCE)
 # set(CMAKE_MACOSX_RPATH             ON)
 # set(CMAKE_BUILD_WITH_INSTALL_RPATH ON)
 
-# set(EMBREE_STATIC_LIB ON)
-
 add_subdirectory(embree)
 
 get_directory_property(EMBREE_VERSION_MAJOR
@@ -41,8 +39,6 @@ ELSEIF (APPLE)
 ELSE()
     SET(embree_filename ${CMAKE_SHARED_LIBRARY_PREFIX}${EMBREE_LIBRARY_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}.${EMBREE_VERSION_MAJOR})
 ENDIF()
-
-message(${embree_filename})
 
 # Create a command to copy the file, and a target that depends on the copy
 add_custom_command(

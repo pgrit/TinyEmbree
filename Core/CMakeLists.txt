@@ -1,13 +1,15 @@
 add_library(TinyEmbreeCore SHARED)
 
-# find_package(embree 3.0 CONFIG REQUIRED)
-
 if (WIN32)
-    add_compile_definitions(TINY_EMBREE_DLL TINY_EMBREE_EXPORTS)
+    target_compile_definitions(TinyEmbreeCore INTERFACE TINY_EMBREE_DLL)
+    target_compile_definitions(TinyEmbreeCore PRIVATE TINY_EMBREE_EXPORTS)
 endif()
 
-target_include_directories(TinyEmbreeCore PRIVATE ${EMBREE_INCLUDE_DIRS})
-target_include_directories(TinyEmbreeCore PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(TinyEmbreeCore
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../External/embree/include
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 target_sources(TinyEmbreeCore
     PUBLIC
@@ -58,7 +60,12 @@ add_custom_command(
 # Test / benchmark target
 add_executable(TinyBench)
 target_sources(TinyBench PRIVATE cbench.cpp)
-target_link_libraries(TinyBench PRIVATE TinyEmbreeCore)
+target_include_directories(TinyBench
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/../External/embree/include
+)
+target_link_libraries(TinyBench PRIVATE TinyEmbreeCore embree)
 set_target_properties(TinyBench
     PROPERTIES
         CXX_STANDARD 11
