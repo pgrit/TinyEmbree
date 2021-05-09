@@ -38,6 +38,7 @@ namespace TinyEmbree {
         readonly List<int> ids = new();
 
         IntPtr accel;
+        bool isBuilt;
         GCHandle positionBuffer;
         readonly ThreadLocal<IntPtr> queryCache = new(() => NewKnnQueryCache());
 
@@ -73,7 +74,7 @@ namespace TinyEmbree {
         }
 
         /// <summary>
-        /// Adds a new point to the cache. Position and id are tracked in an internal 
+        /// Adds a new point to the cache. Position and id are tracked in an internal
         /// list. Thread-safe: multiple adds are supported in parallel, but never add and
         /// query or build the same structure at the same time!
         /// </summary>
@@ -83,6 +84,7 @@ namespace TinyEmbree {
             lock (this) {
                 positions.Add(position);
                 ids.Add(userId);
+                isBuilt = false;
             }
         }
 
@@ -94,6 +96,7 @@ namespace TinyEmbree {
                 positionBuffer.Free();
             positionBuffer = GCHandle.Alloc(positions.ToArray(), GCHandleType.Pinned);
             SetKnnPoints(accel, positionBuffer.AddrOfPinnedObject(), (uint)positions.Count);
+            isBuilt = true;
         }
 
         /// <summary>
@@ -104,6 +107,7 @@ namespace TinyEmbree {
                 positionBuffer.Free();
             positions.Clear();
             ids.Clear();
+            isBuilt = false;
         }
 
         /// <summary>
@@ -118,6 +122,9 @@ namespace TinyEmbree {
         /// ascending distance, closest neighbor is first.
         /// </returns>
         public unsafe int[] QueryNearest(Vector3 position, int maxCount, float maxRadius) {
+            if (!isBuilt)
+                return null;
+
             IntPtr ptr = KnnQuery(accel, queryCache.Value, in position, maxRadius, (uint)maxCount,
                 out uint numFound);
             Span<Neighbor> neighbors = new(ptr.ToPointer(), (int)numFound);
