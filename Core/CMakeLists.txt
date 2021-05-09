@@ -58,17 +58,17 @@ add_custom_command(
         ${CMAKE_CURRENT_SOURCE_DIR}/../Runtimes/ )
 
 # Test / benchmark target
-add_executable(TinyBench)
-target_sources(TinyBench PRIVATE cbench.cpp)
-target_include_directories(TinyBench
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/../External/embree/include
-)
-target_link_libraries(TinyBench PRIVATE TinyEmbreeCore embree)
-set_target_properties(TinyBench
-    PROPERTIES
-        CXX_STANDARD 11
-        CXX_STANDARD_REQUIRED YES
-        CXX_EXTENSIONS NO
-)
+# add_executable(TinyBench)
+# target_sources(TinyBench PRIVATE cbench.cpp)
+# target_include_directories(TinyBench
+#     PRIVATE
+#         ${CMAKE_CURRENT_SOURCE_DIR}
+#         ${CMAKE_CURRENT_SOURCE_DIR}/../External/embree/include
+# )
+# target_link_libraries(TinyBench PRIVATE TinyEmbreeCore embree)
+# set_target_properties(TinyBench
+#     PROPERTIES
+#         CXX_STANDARD 11
+#         CXX_STANDARD_REQUIRED YES
+#         CXX_EXTENSIONS NO
+# )
