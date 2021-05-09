@@ -2,7 +2,7 @@ add_library(TinyEmbreeCore SHARED)
 
 if (WIN32)
     target_compile_definitions(TinyEmbreeCore INTERFACE TINY_EMBREE_DLL)
-    target_compile_definitions(TinyEmbreeCore PRIVATE TINY_EMBREE_EXPORTS)
+    target_compile_definitions(TinyEmbreeCore PRIVATE TINY_EMBREE_DLL TINY_EMBREE_EXPORTS)
 endif()
 
 target_include_directories(TinyEmbreeCore
