@@ -98,7 +98,7 @@ namespace TinyEmbree {
         }
 
         /// <summary>
-        /// Creates a shadow ray that connects two surface points 
+        /// Creates a shadow ray that connects two surface points
         /// (with proper offsets agains self intersection)
         /// </summary>
         /// <param name="from">The first surface point</param>
@@ -123,7 +123,7 @@ namespace TinyEmbree {
         }
 
         /// <summary>
-        /// Creates a shadow ray that connects two surface points 
+        /// Creates a shadow ray that connects two surface points
         /// (with proper offsets agains self intersection)
         /// </summary>
         /// <param name="from">The first surface point</param>
@@ -187,7 +187,7 @@ namespace TinyEmbree {
         /// <returns>True if the shadow ray is occluded</returns>
         public bool LeavesScene(Hit from, Vector3 direction) {
             var ray = MakeBackgroundShadowRay(from, direction);
-            return IsOccluded(ray);
+            return !IsOccluded(ray);
         }
 
         /// <summary>
