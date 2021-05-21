@@ -42,21 +42,21 @@ namespace TinyEmbree {
                 SurfaceArea += surfaceAreas[face];
             }
 
-            this.shadingNormals = shadingNormals;
-            this.textureCoordinates = textureCoordinates;
+            ShadingNormals = shadingNormals;
+            TextureCoordinates = textureCoordinates;
 
             // Compute shading normals from face normals if not set
-            if (this.shadingNormals == null) {
-                this.shadingNormals = new Vector3[vertices.Length];
+            if (ShadingNormals == null) {
+                ShadingNormals = new Vector3[vertices.Length];
                 for (int face = 0; face < NumFaces; ++face) {
-                    this.shadingNormals[indices[face * 3 + 0]] = FaceNormals[face];
-                    this.shadingNormals[indices[face * 3 + 1]] = FaceNormals[face];
-                    this.shadingNormals[indices[face * 3 + 2]] = FaceNormals[face];
+                    ShadingNormals[indices[face * 3 + 0]] = FaceNormals[face];
+                    ShadingNormals[indices[face * 3 + 1]] = FaceNormals[face];
+                    ShadingNormals[indices[face * 3 + 2]] = FaceNormals[face];
                 }
             } else {
                 // Ensure normalization
-                for (int i = 0; i < this.shadingNormals.Length; ++i)
-                    this.shadingNormals[i] = Vector3.Normalize(this.shadingNormals[i]);
+                for (int i = 0; i < ShadingNormals.Length; ++i)
+                    ShadingNormals[i] = Vector3.Normalize(ShadingNormals[i]);
             }
         }
 
@@ -69,12 +69,12 @@ namespace TinyEmbree {
         /// <param name="barycentric">Barycentric coordinates within that triangle</param>
         /// <returns>Texture coordinates</returns>
         public Vector2 ComputeTextureCoordinates(int faceIdx, Vector2 barycentric) {
-            if (textureCoordinates == null)
+            if (TextureCoordinates == null)
                 return new Vector2(0, 0);
 
-            var v1 = textureCoordinates[Indices[faceIdx * 3 + 0]];
-            var v2 = textureCoordinates[Indices[faceIdx * 3 + 1]];
-            var v3 = textureCoordinates[Indices[faceIdx * 3 + 2]];
+            var v1 = TextureCoordinates[Indices[faceIdx * 3 + 0]];
+            var v2 = TextureCoordinates[Indices[faceIdx * 3 + 1]];
+            var v3 = TextureCoordinates[Indices[faceIdx * 3 + 2]];
 
             return barycentric.X * v2
                 +  barycentric.Y * v3
@@ -90,9 +90,9 @@ namespace TinyEmbree {
         /// <param name="barycentric">Barycentric coordinates within that triangle</param>
         /// <returns>Shading normal</returns>
         public Vector3 ComputeShadingNormal(int faceIdx, Vector2 barycentric) {
-            var v1 = shadingNormals[Indices[faceIdx * 3 + 0]];
-            var v2 = shadingNormals[Indices[faceIdx * 3 + 1]];
-            var v3 = shadingNormals[Indices[faceIdx * 3 + 2]];
+            var v1 = ShadingNormals[Indices[faceIdx * 3 + 0]];
+            var v2 = ShadingNormals[Indices[faceIdx * 3 + 1]];
+            var v3 = ShadingNormals[Indices[faceIdx * 3 + 2]];
 
             return Vector3.Normalize(
                 barycentric.X * v2
@@ -121,23 +121,23 @@ namespace TinyEmbree {
         /// <summary>
         /// Vertices of the triangles
         /// </summary>
-        public Vector3[] Vertices;
+        public readonly Vector3[] Vertices;
 
         /// <summary>
-        /// Indices of the triangles
+        /// Indices of the triangles. Each consecutive set of three values references the vertices of one triangle.
         /// </summary>
-        public int[] Indices;
+        public readonly int[] Indices;
 
         /// <summary>
-        /// Actual geometric normals of each triangle (group of three indices). 
+        /// Actual geometric normals of each triangle (group of three indices).
         /// Pre-computed by the constructor.
         /// </summary>
-        public Vector3[] FaceNormals;
+        public readonly Vector3[] FaceNormals;
 
         /// <summary>
         /// Total surface area of the entire mesh, pre-computed by the constructor.
         /// </summary>
-        public float SurfaceArea;
+        public readonly float SurfaceArea;
 
         /// <summary>
         /// Number of vertices in the mesh
@@ -149,8 +149,14 @@ namespace TinyEmbree {
         /// </summary>
         public int NumFaces => Indices.Length / 3;
 
-        // per-vertex attributes
-        readonly Vector3[] shadingNormals;
-        readonly Vector2[] textureCoordinates;
+        /// <summary>
+        /// Shading normal associated with each vertex (automatically computed if not set)
+        /// </summary>
+        public readonly Vector3[] ShadingNormals;
+
+        /// <summary>
+        /// Texture uv coordinates associated with each vertex
+        /// </summary>
+        public readonly Vector2[] TextureCoordinates;
     }
 }
