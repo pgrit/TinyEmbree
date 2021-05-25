@@ -40,7 +40,7 @@ namespace TinyEmbree {
         IntPtr accel;
         bool isBuilt;
         GCHandle positionBuffer;
-        readonly ThreadLocal<IntPtr> queryCache = new(() => NewKnnQueryCache());
+        readonly ThreadLocal<IntPtr> queryCache = new(() => NewKnnQueryCache(), trackAllValues: true);
 
         /// <summary>
         /// Prepares a new BVH for kNN search
