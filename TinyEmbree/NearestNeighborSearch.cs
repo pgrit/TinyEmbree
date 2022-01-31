@@ -21,6 +21,7 @@ namespace TinyEmbree {
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
         static extern IntPtr NewKnnQueryCache();
+
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
         static extern void ReleaseKnnQueryCache(IntPtr cache);
 
@@ -50,9 +51,14 @@ namespace TinyEmbree {
         }
 
         /// <summary>
-        /// Releases the unmanaged resources
+        /// Only called if Dispose was not invoked. This will lead to a memory leak since the finalizer order
+        /// is undefined. The ThreadLocal caches may or may not already be disposed, so there is no way to
+        /// access their native memory pointers anymore.
         /// </summary>
-        ~NearestNeighborSearch() => Dispose();
+        ~NearestNeighborSearch() {
+            Console.WriteLine("MEMORY LEAK: NearestNeighborSearch Finalizer called by GC, " +
+                "thread-local data not disposed correctly. Use Dispose().");
+        }
 
         /// <summary>
         /// Releases the unmanaged resources
