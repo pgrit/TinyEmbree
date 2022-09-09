@@ -5,9 +5,19 @@ if (WIN32)
     target_compile_definitions(TinyEmbreeCore PRIVATE TINY_EMBREE_DLL TINY_EMBREE_EXPORTS)
 endif()
 
+# Load the prebuilt binaries and headers for Embree and TBB
+if(WIN32)
+    set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/Prebuilt/win CACHE PATH " ")
+elseif(APPLE)
+    set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/Prebuilt/osx CACHE PATH " ")
+else()
+    set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/Prebuilt/linux CACHE PATH " ")
+endif()
+
+find_package(embree 3 REQUIRED)
+
 target_include_directories(TinyEmbreeCore
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../External/embree/include
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 

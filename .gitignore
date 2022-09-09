@@ -13,7 +13,8 @@ bin
 obj
 
 # Compiled shared libraries
-Runtimes/*
+/Runtimes/*
+/Prebuilt/*
 
 # Extracted test meshes (we only commit the .zip archives)
 Data/*
