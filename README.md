@@ -6,8 +6,8 @@
 # TinyEmbree
 
 A very simple C# wrapper around the [Embree](https://www.embree.org/) ray tracing kernels. Currently only supports simple triangle meshes with no motion blur etc.
-Embree and our wrapper are automatically compiled for x86-64 Windows, Linux, and macOS, with support for AVX and AVX2. On these platforms, you can directly use the [Nuget package](https://www.nuget.org/packages/TinyEmbree/).
-Other platforms need to compile from source, instructions are below.
+Embree and our wrapper are automatically compiled for x86-64 Windows, Linux, and macOS with support for AVX and AVX2, and for arm64 macOS. On these platforms, you can directly use the [Nuget package](https://www.nuget.org/packages/TinyEmbree/).
+Other platforms need to compile both Embree and our C++ wrapper code from source, instructions are below.
 
 ## Usage example
 
@@ -48,33 +48,12 @@ if (hit) {
 - a C++11 (or newer) compiler
 - CMake
 
-Embree is included as a submodule, so make sure to clone using `--recursive`, or run
+## Building from source
 
+There is a PowerShell script that downloads the prebuilt binaries for Embree and TBB ([RenderLibs](https://github.com/pgrit/RenderLibs/)). It currently supports x64 Windows and Linux, and x64 and arm64 OSX. You can run it via
 ```
-git submodule update --init --recursive
+pwsh ./make.ps1
 ```
+provided that [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell) is installed. The script is rather simple (download and extract zip, run CMake, copy binaries) and you can also manually perform the same steps.
 
-## Building the C++ wrapper
-
-The process is the usual:
-
-```
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . --config Release
-```
-
-The .dll / .so / .dylib files will be copied to the `Runtimes` folder. 
-
-## Testing the C# wrapper
-
-The `TinyEmbree/TinyEmbree.csproj` project file automatically copies the shared libraries from the `Runtimes` directory.
-If you are compiling on a platform other than x86-64 Linux, Windows, or macOS, you need to add entries with the correct runtime identifiers [to the project file](TinyEmbree/TinyEmbree.csproj). The correct RID can be found here: https://docs.microsoft.com/en-us/dotnet/core/rid-catalog
-
-To compile and run the tests:
-```
-dotnet test
-```
-
-That's it. Simply add a reference to `TinyEmbree/TinyEmbree.csproj` to your project and you should be up and running.
+If compilation was successful, the C# wrapper is also automatically built and tested by the script.
