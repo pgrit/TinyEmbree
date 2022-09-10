@@ -74,4 +74,6 @@ mv runtimes/libTinyEmbreeCore.so runtimes/linux-x64/native
 mv runtimes/libTinyEmbreeCore.dylib runtimes/osx-x64/native
 mv runtimes/libTinyEmbreeCore.dylib runtimes/osx-arm64/native
 
+# Test the C# wrapper
+dotnet build
 dotnet test
