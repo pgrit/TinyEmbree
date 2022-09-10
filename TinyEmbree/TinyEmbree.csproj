@@ -14,9 +14,9 @@
     <IsPackable>true</IsPackable>
     <PackageTags>ray tracing Embree</PackageTags>
 
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <!-- Each additional platform requires an entry here, once the native binaries have been added below -->
-    <RuntimeIdentifiers>win10-x64;linux-x64;osx-x64;osx-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64;osx-arm64</RuntimeIdentifiers>
 
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -28,7 +28,7 @@
     <Content CopyToOutputDirectory="Always" Include="../runtimes/win-x64/native/**" Pack="false" />
     <Content CopyToOutputDirectory="Always" Include="../runtimes/linux-x64/native/**" Pack="false" />
     <Content CopyToOutputDirectory="Always" Include="../runtimes/osx-x64/native/**" Pack="false" />
-    <Content CopyToOutputDirectory="Always" Include="../runtimes/osx-arm64/native/**" Pack="false" />
+    <!-- <Content CopyToOutputDirectory="Always" Include="../runtimes/osx-arm64/native/**" Pack="false" /> -->
   </ItemGroup>
 
   <ItemGroup>

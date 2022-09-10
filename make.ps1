@@ -68,15 +68,6 @@ else
 
 cd ..
 
-ls runtimes/osx-x64/native
-
-otool -l runtimes/osx-x64/native/libTinyEmbreeCore.dylib
-otool -l runtimes/osx-x64/native/libembree3.3.dylib
-
-$Env:DYLD_PRINT_LIBRARIES=1
-$Env:DYLD_PRINT_LIBRARIES_POST_LAUNCH=1
-$Env:DYLD_PRINT_RPATHS=1
-
 # Test the C# wrapper
 dotnet build
 dotnet test
