@@ -11,6 +11,9 @@ if(WIN32)
 elseif(APPLE)
     if (CMAKE_OSX_ARCHITECTURES MATCHES "arm64")
         set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/prebuilt/osx-arm64 CACHE PATH " ")
+        # TBB is a universal binary, but Embree is not. Must make sure to keep them appart so we don't confuse
+        # CMake and wind up linking to the wrong one.
+        set(TBB_DIR ${CMAKE_SOURCE_DIR}/prebuilt/osx/lib/cmake/TBB CACHE PATH " ")
     else()
         set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/prebuilt/osx CACHE PATH " ")
     endif()
