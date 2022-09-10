@@ -4,7 +4,7 @@
     <Title>TinyEmbree</Title>
     <Description>A very simple C# wrapper around the Embree ray tracing kernels.</Description>
     <PackageId>TinyEmbree</PackageId>
-    <Version>0.4.4</Version>
+    <Version>0.5.0</Version>
     <Copyright>(c) Pascal Grittmann</Copyright>
     <RepositoryUrl>https://github.com/pgrit/TinyEmbree</RepositoryUrl>
 
