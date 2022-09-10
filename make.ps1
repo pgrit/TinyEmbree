@@ -49,6 +49,9 @@ if ([environment]::OSVersion::IsMacOS())
     cmake --build . --config Release
     if (-not $?) { throw "Build failed" }
 
+    # Empty the build folder first to avoid cache issues
+    rm -rf *
+
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64" ..
     if (-not $?) { throw "CMake configure failed" }
     cmake --build . --config Release
