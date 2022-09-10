@@ -1,15 +1,16 @@
 # Download the prebuilt binaries for TBB and Embree from GitHub
 if (-not(Test-Path -Path "prebuilt" -PathType Container))
 {
+    $renderLibVersion = "0.1.1"
     if ([environment]::OSVersion::IsWindows())
     {
-        Invoke-WebRequest -Uri "https://github.com/pgrit/RenderLibs/releases/download/v0.1.0/RenderLibs-v0.1.0.zip" -OutFile "prebuilt.zip"
+        Invoke-WebRequest -Uri "https://github.com/pgrit/RenderLibs/releases/download/v$renderLibVersion/RenderLibs-v$renderLibVersion.zip" -OutFile "prebuilt.zip"
         Expand-Archive "prebuilt.zip" -DestinationPath ./prebuilt
         rm prebuilt.zip
     }
     else
     {
-        wget -q "https://github.com/pgrit/RenderLibs/releases/download/v0.1.0/RenderLibs-v0.1.0.zip" -O "prebuilt.zip"
+        wget -q "https://github.com/pgrit/RenderLibs/releases/download/v$renderLibVersion/RenderLibs-v$renderLibVersion.zip" -O "prebuilt.zip"
         Expand-Archive "prebuilt.zip" -DestinationPath ./prebuilt
         rm prebuilt.zip
     }
