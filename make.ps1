@@ -49,7 +49,7 @@ if ([environment]::OSVersion::IsMacOS())
     cmake --build . --config Release
     if (-not $?) { throw "Build failed" }
 
-    mv runtimes/libTinyEmbreeCore.dylib runtimes/osx-x64/native
+    mv ../runtimes/libTinyEmbreeCore.dylib ../runtimes/osx-x64/native/
 
     # Empty the build folder first to avoid cache issues
     rm -rf *
@@ -59,7 +59,7 @@ if ([environment]::OSVersion::IsMacOS())
     cmake --build . --config Release
     if (-not $?) { throw "Build failed" }
 
-    mv runtimes/libTinyEmbreeCore.dylib runtimes/osx-arm64/native
+    mv ../runtimes/libTinyEmbreeCore.dylib ../runtimes/osx-arm64/native/
 }
 else
 {
@@ -69,8 +69,8 @@ else
     cmake --build . --config Release
     if (-not $?) { throw "Build failed" }
 
-    mv runtimes/TinyEmbreeCore.dll runtimes/win-x64/native
-    mv runtimes/libTinyEmbreeCore.so runtimes/linux-x64/native
+    mv ../runtimes/TinyEmbreeCore.dll ../runtimes/win-x64/native/
+    mv ../runtimes/libTinyEmbreeCore.so ../runtimes/linux-x64/native/
 }
 
 cd ..
