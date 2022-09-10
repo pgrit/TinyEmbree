@@ -7,11 +7,15 @@ endif()
 
 # Load the prebuilt binaries and headers for Embree and TBB
 if(WIN32)
-    set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/Prebuilt/win CACHE PATH " ")
+    set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/prebuilt/win CACHE PATH " ")
 elseif(APPLE)
-    set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/Prebuilt/osx CACHE PATH " ")
+    if (CMAKE_OSX_ARCHITECTURES MATCHES "arm64")
+        set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/prebuilt/osx-arm64 CACHE PATH " ")
+    else()
+        set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/prebuilt/osx CACHE PATH " ")
+    endif()
 else()
-    set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/Prebuilt/linux CACHE PATH " ")
+    set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/prebuilt/linux CACHE PATH " ")
 endif()
 
 find_package(embree 3 REQUIRED)
@@ -61,11 +65,23 @@ set_target_properties(TinyEmbreeCore
         CXX_EXTENSIONS NO
 )
 
+# Copy the compiled shared library, and only that, to the runtimes folder
+if(WIN32)
+    set(RUNTIMES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../runtimes/win-x64/native/)
+elseif(APPLE)
+    if (CMAKE_OSX_ARCHITECTURES MATCHES "arm64")
+        set(RUNTIMES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../runtimes/osx-arm64/native/)
+    else()
+        set(RUNTIMES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../runtimes/osx-x64/native/)
+    endif()
+else()
+    set(RUNTIMES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../runtimes/linux-x64/native/)
+endif()
+
 add_custom_command(
     TARGET TinyEmbreeCore POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-        $<TARGET_FILE:TinyEmbreeCore>
-        ${CMAKE_CURRENT_SOURCE_DIR}/../Runtimes/ )
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:TinyEmbreeCore> ${RUNTIMES_DIR}
+)
 
 # Test / benchmark target
 # add_executable(TinyBench)
