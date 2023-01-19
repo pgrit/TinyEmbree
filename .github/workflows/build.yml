@@ -10,10 +10,10 @@ jobs:
         os: [ macos-latest, ubuntu-latest, windows-latest ]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1.7.2
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '7.0.x'
 
@@ -27,7 +27,7 @@ jobs:
       shell: pwsh
 
     - name: Upload Binaries
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         path: ${{github.workspace}}/runtimes/*
 
@@ -36,7 +36,7 @@ jobs:
     needs: [build]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - uses: actions/download-artifact@v2
       with:
@@ -44,7 +44,7 @@ jobs:
         path: ${{github.workspace}}/runtimes
 
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1.7.2
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '7.0.x'
 
@@ -56,7 +56,7 @@ jobs:
       run: dotnet pack -c Release
 
     - name: Upload .nupkg
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         path: ${{github.workspace}}/TinyEmbree/bin/**/*.nupkg
 
