@@ -8,6 +8,17 @@
 public class Raytracer : IDisposable {
     nint scene;
     bool isReady = false;
+    RayTracerStats stats;
+
+    /// <summary>
+    /// Resets the stat counters (number of rays, shadow rays, hits, ...)
+    /// </summary>
+    public void ResetStats() => stats = new();
+
+    /// <summary>
+    /// The ray tracing statistics since the last time <see cref="ResetStats"/> was called.
+    /// </summary>
+    public RayTracerStats Stats => stats;
 
     void Free() {
         if (scene != nint.Zero) {
@@ -64,9 +75,11 @@ public class Raytracer : IDisposable {
         Debug.Assert(isReady);
 
         TinyEmbreeCore.TraceSingle(scene, in ray, out var minHit);
+        Interlocked.Increment(ref stats.NumRays);
 
         if (minHit.meshId == uint.MaxValue)
             return new Hit();
+        Interlocked.Increment(ref stats.NumRayHits);
 
         Hit hit = new() {
             BarycentricCoords = new Vector2(minHit.u, minHit.v),
@@ -153,7 +166,10 @@ public class Raytracer : IDisposable {
     /// <returns>True if the shadow ray is occluded</returns>
     public bool IsOccluded(ShadowRay ray) {
         Debug.Assert(isReady);
-        return TinyEmbreeCore.IsOccluded(scene, in ray.Ray, ray.MaxDistance);
+        Interlocked.Increment(ref stats.NumShadowRays);
+        bool occluded = TinyEmbreeCore.IsOccluded(scene, in ray.Ray, ray.MaxDistance);
+        if (occluded) Interlocked.Increment(ref stats.NumOccluded);
+        return occluded;
     }
 
     /// <summary>

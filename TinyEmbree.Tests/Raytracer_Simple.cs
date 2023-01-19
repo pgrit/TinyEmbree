@@ -21,7 +21,7 @@ namespace SeeSharp.Core.Tests.Geometry {
 
             TriangleMesh mesh = new(vertices, indices);
 
-            using var rt = new Raytracer(); 
+            using var rt = new Raytracer();
             rt.AddMesh(mesh);
             rt.CommitScene();
 
@@ -34,6 +34,8 @@ namespace SeeSharp.Core.Tests.Geometry {
             Assert.Equal(10.0f, hit.Distance, 0);
             Assert.Equal(1u, hit.PrimId);
             Assert.Equal(mesh, hit.Mesh);
+            Assert.Equal(1u, rt.Stats.NumRays);
+            Assert.Equal(1u, rt.Stats.NumRayHits);
         }
 
         [Fact]
@@ -52,7 +54,7 @@ namespace SeeSharp.Core.Tests.Geometry {
 
             TriangleMesh mesh = new(vertices, indices);
 
-            using Raytracer rt = new(); 
+            using Raytracer rt = new();
             rt.AddMesh(mesh);
             rt.CommitScene();
 
@@ -63,6 +65,8 @@ namespace SeeSharp.Core.Tests.Geometry {
             });
 
             Assert.False(hit);
+            Assert.Equal(1u, rt.Stats.NumRays);
+            Assert.Equal(0u, rt.Stats.NumRayHits);
         }
     }
 }
