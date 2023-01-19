@@ -10,13 +10,13 @@ namespace TinyEmbree {
     /// self intersections.
     /// </summary>
     public class Raytracer : IDisposable {
-        IntPtr scene;
+        nint scene;
         bool isReady = false;
 
         void Free() {
-            if (scene != IntPtr.Zero) {
+            if (scene != nint.Zero) {
                 TinyEmbreeCore.DeleteScene(scene);
-                scene = IntPtr.Zero;
+                scene = nint.Zero;
             }
         }
 

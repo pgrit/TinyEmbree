@@ -11,22 +11,22 @@ namespace TinyEmbree {
     /// </summary>
     public class NearestNeighborSearch : IDisposable {
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
-        static extern IntPtr NewKnnAccelerator();
+        static extern nint NewKnnAccelerator();
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
-        static extern void ReleaseKnnAccelerator(IntPtr accelerator);
+        static extern void ReleaseKnnAccelerator(nint accelerator);
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
-        static extern void SetKnnPoints(IntPtr accelerator, IntPtr data, uint numPoints);
+        static extern void SetKnnPoints(nint accelerator, nint data, uint numPoints);
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
-        static extern IntPtr NewKnnQueryCache();
+        static extern nint NewKnnQueryCache();
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
-        static extern void ReleaseKnnQueryCache(IntPtr cache);
+        static extern void ReleaseKnnQueryCache(nint cache);
 
         [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
-        static extern IntPtr KnnQuery(IntPtr accelerator, IntPtr cache, in Vector3 pos, float radius, uint k,
+        static extern nint KnnQuery(nint accelerator, nint cache, in Vector3 pos, float radius, uint k,
             out uint numFound);
 
         [StructLayout(LayoutKind.Sequential)]
@@ -38,10 +38,10 @@ namespace TinyEmbree {
         readonly List<Vector3> positions = new();
         readonly List<int> ids = new();
 
-        IntPtr accel;
+        nint accel;
         bool isBuilt;
         GCHandle positionBuffer;
-        readonly ThreadLocal<IntPtr> queryCache = new(() => NewKnnQueryCache(), trackAllValues: true);
+        readonly ThreadLocal<nint> queryCache = new(() => NewKnnQueryCache(), trackAllValues: true);
 
         /// <summary>
         /// Prepares a new BVH for kNN search
@@ -64,9 +64,9 @@ namespace TinyEmbree {
         /// Releases the unmanaged resources
         /// </summary>
         public void Dispose() {
-            if (accel != IntPtr.Zero) {
+            if (accel != nint.Zero) {
                 ReleaseKnnAccelerator(accel);
-                accel = IntPtr.Zero;
+                accel = nint.Zero;
 
                 foreach (var cache in queryCache.Values) {
                     ReleaseKnnQueryCache(cache);
@@ -131,7 +131,7 @@ namespace TinyEmbree {
             if (!isBuilt)
                 return null;
 
-            IntPtr ptr = KnnQuery(accel, queryCache.Value, in position, maxRadius, (uint)maxCount,
+            nint ptr = KnnQuery(accel, queryCache.Value, in position, maxRadius, (uint)maxCount,
                 out uint numFound);
             Span<Neighbor> neighbors = new(ptr.ToPointer(), (int)numFound);
 
@@ -169,7 +169,7 @@ namespace TinyEmbree {
         /// <param name="maxRadius">Maximum distance between any neighbor and the query point</param>
         /// <param name="callback">Delegate invoked for each neighbor</param>
         public unsafe void ForAllNearest(Vector3 position, int maxCount, float maxRadius, QueryCallback callback) {
-            IntPtr ptr = KnnQuery(accel, queryCache.Value, in position, maxRadius, (uint)maxCount,
+            nint ptr = KnnQuery(accel, queryCache.Value, in position, maxRadius, (uint)maxCount,
                 out uint numFound);
             Span<Neighbor> neighbors = new(ptr.ToPointer(), (int)numFound);
 
