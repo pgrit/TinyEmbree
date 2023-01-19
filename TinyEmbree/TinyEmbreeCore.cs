@@ -1,7 +1,3 @@
-using System;
-using System.Numerics;
-using System.Runtime.InteropServices;
-
 namespace TinyEmbree;
 
 internal static class TinyEmbreeCore {
