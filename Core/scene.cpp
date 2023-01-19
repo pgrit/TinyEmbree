@@ -1,5 +1,6 @@
 #include <cassert>
 #include <algorithm>
+#include <limits>
 
 #include "scene.h"
 
