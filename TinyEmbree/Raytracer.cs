@@ -19,7 +19,7 @@ public class Raytracer : IDisposable {
     /// If true (default) tracks the number of ray tracing operations and their outcomes.
     /// Disable to minimize overhead.
     /// </summary>
-    public bool EnableStats { get; set; } = true;
+    public bool EnableStats { get; set; } = false;
 
     /// <summary>
     /// The ray tracing statistics since the last time <see cref="ResetStats"/> was called.
