@@ -32,6 +32,7 @@ TINY_EMBREE_API bool IsOccluded(void* scene, const Ray* ray, float maxDistance) 
 
 TINY_EMBREE_API void DeleteScene(void* scene) {
     auto scn = (tinyembree::Scene*) scene;
+    delete scn;
 }
 
 }
