@@ -11,6 +11,13 @@ public class Raytracer : IDisposable {
     RayTracerStats stats;
 
     /// <summary>
+    /// Number of currently existing ray tracers. Increased with every object of this class that is created,
+    /// reduced only after proper clean up.
+    /// </summary>
+    public static int NumAlive => numAlive;
+    static int numAlive = 0;
+
+    /// <summary>
     /// Resets the stat counters (number of rays, shadow rays, hits, ...)
     /// </summary>
     public void ResetStats() => stats = new();
@@ -30,6 +37,7 @@ public class Raytracer : IDisposable {
         if (scene != nint.Zero) {
             TinyEmbreeCore.DeleteScene(scene);
             scene = nint.Zero;
+            Interlocked.Decrement(ref numAlive);
         }
     }
 
@@ -51,6 +59,7 @@ public class Raytracer : IDisposable {
     /// </summary>
     public Raytracer() {
         scene = TinyEmbreeCore.InitScene();
+        Interlocked.Increment(ref numAlive);
     }
 
     /// <summary>
@@ -68,6 +77,7 @@ public class Raytracer : IDisposable {
     /// Builds the acceleration structure
     /// </summary>
     public void CommitScene() {
+        Debug.Assert(scene != 0);
         TinyEmbreeCore.FinalizeScene(scene);
         isReady = true;
     }
