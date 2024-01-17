@@ -24,12 +24,17 @@ TINY_EMBREE_API void ReleaseKnnQueryCache(void* cache) {
 }
 
 TINY_EMBREE_API Neighbor* KnnQuery(void* accelerator, void* cache, const Point* pos, float radius,
-                                   unsigned int k, unsigned int* numFound) {
-    ((tinyembree::KNNResult*)cache)->k = k;
-    ((tinyembree::KNNResult*)cache)->knn.GetContainer().clear();
-    ((tinyembree::PointQuery*)accelerator)->KnnQuery(pos, radius, ((tinyembree::KNNResult*)cache));
-    *numFound = ((tinyembree::KNNResult*)cache)->knn.size();
-    return ((tinyembree::KNNResult*)cache)->knn.GetContainer().data();
+                                   unsigned int k, unsigned int* numFound, float* furthest) {
+    auto* c = ((tinyembree::KNNResult*)cache);
+    c->k = k;
+    c->knn.GetContainer().clear();
+    ((tinyembree::PointQuery*)accelerator)->KnnQuery(pos, radius, c);
+    *numFound = c->knn.size();
+    if (*numFound == 0)
+        *furthest = radius;
+    else
+        *furthest = c->knn.top().d;
+    return c->knn.GetContainer().data();
 }
 
 } // extern "C"

@@ -12,7 +12,7 @@ namespace TinyEmbree.Tests {
             tree.Build();
 
             //When
-            var result = tree.QueryNearest(Vector3.Zero, 1, float.MaxValue);
+            var result = tree.QueryNearest(Vector3.Zero, 1, float.MaxValue, out float _);
 
             //Then
             Assert.Single(result);
@@ -28,7 +28,7 @@ namespace TinyEmbree.Tests {
             tree.Build();
 
             //When
-            var result = tree.QueryNearest(Vector3.Zero, 1, 0.1f);
+            var result = tree.QueryNearest(Vector3.Zero, 1, 0.1f, out float _);
 
             //Then
             Assert.Null(result);
@@ -45,7 +45,7 @@ namespace TinyEmbree.Tests {
             tree.Build();
 
             //When
-            var result = tree.QueryNearest(Vector3.Zero, 1, float.MaxValue);
+            var result = tree.QueryNearest(Vector3.Zero, 1, float.MaxValue, out float _);
 
             //Then
             Assert.Single(result);
@@ -63,7 +63,7 @@ namespace TinyEmbree.Tests {
             tree.Build();
 
             //When
-            var result = tree.QueryNearest(Vector3.Zero, 2, float.MaxValue);
+            var result = tree.QueryNearest(Vector3.Zero, 2, float.MaxValue, out float _);
 
             //Then
             Assert.Equal(2, result.Length);
@@ -82,7 +82,7 @@ namespace TinyEmbree.Tests {
             tree.Build();
 
             //When
-            var result = tree.QueryNearest(Vector3.Zero, 2, 20.0f);
+            var result = tree.QueryNearest(Vector3.Zero, 2, 20.0f, out float _);
 
             //Then
             Assert.Single(result);
@@ -101,7 +101,7 @@ namespace TinyEmbree.Tests {
 
             //When
             tree.Clear();
-            var result = tree.QueryNearest(Vector3.Zero, 2, float.MaxValue);
+            var result = tree.QueryNearest(Vector3.Zero, 2, float.MaxValue, out float _);
 
             //Then
             Assert.Null(result);

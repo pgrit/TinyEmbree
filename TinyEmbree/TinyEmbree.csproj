@@ -40,4 +40,8 @@
     <None Include="../README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
+  <ItemGroup>
+    <DirectPInvoke Include="TinyEmbreeCore" />
+  </ItemGroup>
+
 </Project>

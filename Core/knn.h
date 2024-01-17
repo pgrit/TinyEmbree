@@ -25,6 +25,6 @@ TINY_EMBREE_API void* NewKnnQueryCache();
 TINY_EMBREE_API void ReleaseKnnQueryCache(void* cache);
 
 TINY_EMBREE_API Neighbor* KnnQuery(void* accelerator, void* cache, const Point* pos, float radius,
-    unsigned int k, unsigned int* numFound);
+    unsigned int k, unsigned int* numFound, float* furthest);
 
 } // extern "C"

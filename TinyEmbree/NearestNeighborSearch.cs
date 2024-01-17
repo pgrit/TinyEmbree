@@ -22,7 +22,7 @@ public class NearestNeighborSearch : IDisposable {
 
     [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
     static extern nint KnnQuery(nint accelerator, nint cache, in Vector3 pos, float radius, uint k,
-        out uint numFound);
+        out uint numFound, out float furthest);
 
     [StructLayout(LayoutKind.Sequential)]
     struct Neighbor {
@@ -122,12 +122,15 @@ public class NearestNeighborSearch : IDisposable {
     /// Array of user IDs of the maxCount nearest neighbors within maxRadius. Sorted by
     /// ascending distance, closest neighbor is first.
     /// </returns>
-    public unsafe int[] QueryNearest(Vector3 position, int maxCount, float maxRadius) {
+    public unsafe int[] QueryNearest(Vector3 position, int maxCount, float maxRadius, out float distToFurthest) {
         if (!isBuilt)
+        {
+            distToFurthest = 0;
             return null;
+        }
 
         nint ptr = KnnQuery(accel, queryCache.Value, in position, maxRadius, (uint)maxCount,
-            out uint numFound);
+            out uint numFound, out distToFurthest);
         Span<Neighbor> neighbors = new(ptr.ToPointer(), (int)numFound);
 
         if (numFound == 0)
@@ -152,7 +155,7 @@ public class NearestNeighborSearch : IDisposable {
     /// <param name="position">Position of the neighbor</param>
     /// <param name="id">User-defined ID of the neighbor</param>
     /// <param name="distance">Distance from the query point</param>
-    public delegate void QueryCallback(Vector3 position, int id, float distance);
+    public delegate void QueryCallback(Vector3 position, int id, float distance, int numFound, float distToFurthest);
 
     /// <summary>
     /// Queries the k nearest neighbors within the given radius. Thread-safe: multiple queries
@@ -165,7 +168,7 @@ public class NearestNeighborSearch : IDisposable {
     /// <param name="callback">Delegate invoked for each neighbor</param>
     public unsafe void ForAllNearest(Vector3 position, int maxCount, float maxRadius, QueryCallback callback) {
         nint ptr = KnnQuery(accel, queryCache.Value, in position, maxRadius, (uint)maxCount,
-            out uint numFound);
+            out uint numFound, out float distToFurthest);
         Span<Neighbor> neighbors = new(ptr.ToPointer(), (int)numFound);
 
         if (numFound == 0)
@@ -173,7 +176,7 @@ public class NearestNeighborSearch : IDisposable {
 
         for (int i = 0; i < numFound; ++i) {
             int idx = (int)neighbors[i].id;
-            callback(positions[idx], ids[idx], neighbors[i].distance);
+            callback(positions[idx], ids[idx], neighbors[i].distance, (int)numFound, distToFurthest);
         }
     }
 }
