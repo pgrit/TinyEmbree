@@ -1,63 +1,85 @@
-# Download the prebuilt binaries for TBB and Embree from GitHub
-if (-not(Test-Path -Path "prebuilt" -PathType Container))
+param(
+    [string] $renderLibVersion = "0.2.0",
+    [string] $localRenderLibPath = $null
+)
+
+function Ensure-Dir {
+    param(
+        [string] $path
+    )
+    New-Item -ItemType Directory -Force $path > $null
+}
+
+if ($localRenderLibPath)
 {
-    $renderLibVersion = "0.1.1"
+    echo "Using local prebuilt Embree from $localRenderLibPath"
+    Remove-Item -Recurse -Force ./prebuilt
+    Copy-Item -Force -Recurse -Path $localRenderLibPath -Destination ./prebuilt
+}
+elseif (-not(Test-Path -Path "prebuilt" -PathType Container))
+{
+    # Download the prebuilt binaries for TBB and Embree from GitHub
     Invoke-WebRequest -Uri "https://github.com/pgrit/RenderLibs/releases/download/v$renderLibVersion/RenderLibs-v$renderLibVersion.zip" -OutFile "prebuilt.zip"
     Expand-Archive "prebuilt.zip" -DestinationPath ./prebuilt
     rm prebuilt.zip
 }
 
 # Copy the shared libraries to the Runtimes folder for packaging in .NET
-mkdir runtimes
+Ensure-Dir runtimes
 
-mkdir runtimes/linux-x64
-mkdir runtimes/linux-x64/native
+Ensure-Dir runtimes/linux-x64
+Ensure-Dir runtimes/linux-x64/native
 cp prebuilt/linux/lib/libembree3.so.3 runtimes/linux-x64/native/
 cp prebuilt/linux/lib/libtbb.so.12.8 runtimes/linux-x64/native/libtbb.so.12
 
-mkdir runtimes/win-x64
-mkdir runtimes/win-x64/native
+Ensure-Dir runtimes/win-x64
+Ensure-Dir runtimes/win-x64/native
 cp prebuilt/win/bin/embree3.dll runtimes/win-x64/native/
 cp prebuilt/win/bin/tbb12.dll runtimes/win-x64/native/
 
-mkdir runtimes/osx-x64
-mkdir runtimes/osx-x64/native
-cp prebuilt/osx/lib/libembree3.3.dylib runtimes/osx-x64/native/
+Ensure-Dir runtimes/osx-x64
+Ensure-Dir runtimes/osx-x64/native
+cp prebuilt/osx/lib/libembree3.1.dylib runtimes/osx-x64/native/
 cp prebuilt/osx/lib/libtbb.12.8.dylib runtimes/osx-x64/native/libtbb.12.dylib
 
-mkdir runtimes/osx-arm64
-mkdir runtimes/osx-arm64/native
-cp prebuilt/osx-arm64/lib/libembree3.3.dylib runtimes/osx-arm64/native/
+Ensure-Dir runtimes/osx-arm64
+Ensure-Dir runtimes/osx-arm64/native
+cp prebuilt/osx-arm64/lib/libembree3.1.dylib runtimes/osx-arm64/native/
 cp prebuilt/osx/lib/libtbb.12.8.dylib runtimes/osx-arm64/native/libtbb.12.dylib
 
-mkdir build
+Ensure-Dir build
 cd build
 
-if ([environment]::OSVersion::IsMacOS())
+try
 {
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="x86_64" ..
-    if (-not $?) { throw "CMake configure failed" }
-    cmake --build . --config Release
-    if (-not $?) { throw "Build failed" }
+    if ([environment]::OSVersion::IsMacOS())
+    {
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="x86_64" ..
+        if (-not $?) { throw "CMake configure failed" }
+        cmake --build . --config Release
+        if (-not $?) { throw "Build failed" }
 
-    # Empty the build folder first to avoid cache issues
-    rm -rf *
+        # Empty the build folder first to avoid cache issues
+        rm -rf *
 
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64" ..
-    if (-not $?) { throw "CMake configure failed" }
-    cmake --build . --config Release
-    if (-not $?) { throw "Build failed" }
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64" ..
+        if (-not $?) { throw "CMake configure failed" }
+        cmake --build . --config Release
+        if (-not $?) { throw "Build failed" }
+    }
+    else
+    {
+        cmake -DCMAKE_BUILD_TYPE=Release ..
+        if (-not $?) { throw "CMake configure failed" }
+
+        cmake --build . --config Release
+        if (-not $?) { throw "Build failed" }
+    }
 }
-else
+finally
 {
-    cmake -DCMAKE_BUILD_TYPE=Release ..
-    if (-not $?) { throw "CMake configure failed" }
-
-    cmake --build . --config Release
-    if (-not $?) { throw "Build failed" }
+    cd ..
 }
-
-cd ..
 
 # Test the C# wrapper
 dotnet build
