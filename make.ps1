@@ -83,4 +83,7 @@ finally
 
 # Test the C# wrapper
 dotnet build
+if (-not $?) { throw "Build failed" }
+
 dotnet test
+if (-not $?) { throw "Tests failed" }
