@@ -39,12 +39,12 @@ cp prebuilt/win/bin/tbb12.dll runtimes/win-x64/native/
 
 Ensure-Dir runtimes/osx-x64
 Ensure-Dir runtimes/osx-x64/native
-cp prebuilt/osx/lib/libembree3.1.dylib runtimes/osx-x64/native/
+cp prebuilt/osx/lib/libembree3.3.dylib runtimes/osx-x64/native/
 cp prebuilt/osx/lib/libtbb.12.12.dylib runtimes/osx-x64/native/libtbb.12.dylib
 
 Ensure-Dir runtimes/osx-arm64
 Ensure-Dir runtimes/osx-arm64/native
-cp prebuilt/osx-arm64/lib/libembree3.1.dylib runtimes/osx-arm64/native/
+cp prebuilt/osx-arm64/lib/libembree3.3.dylib runtimes/osx-arm64/native/
 cp prebuilt/osx/lib/libtbb.12.12.dylib runtimes/osx-arm64/native/libtbb.12.dylib
 
 Ensure-Dir build
