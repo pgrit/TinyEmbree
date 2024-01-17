@@ -212,7 +212,7 @@ public class Raytracer : IDisposable {
     /// Convenience wrapper that calls <see cref="MakeBackgroundShadowRay"/> and then
     /// <see cref="IsOccluded(ShadowRay)"/>.
     /// </summary>
-    /// <returns>True if the shadow ray is occluded</returns>
+    /// <returns>True if the shadow ray is not occluded</returns>
     public bool LeavesScene(Hit from, Vector3 direction) {
         var ray = MakeBackgroundShadowRay(from, direction);
         return !IsOccluded(ray);
