@@ -118,6 +118,7 @@ public class NearestNeighborSearch : IDisposable {
     /// <param name="position">The query location</param>
     /// <param name="maxCount">Maximum number of neighbors to find ("k")</param>
     /// <param name="maxRadius">Maximum distance between any neighbor and the query point</param>
+    /// <param name="distToFurthest">Distance of the furthest away point to the query location</param>
     /// <returns>
     /// Array of user IDs of the maxCount nearest neighbors within maxRadius. Sorted by
     /// ascending distance, closest neighbor is first.
@@ -155,6 +156,8 @@ public class NearestNeighborSearch : IDisposable {
     /// <param name="position">Position of the neighbor</param>
     /// <param name="id">User-defined ID of the neighbor</param>
     /// <param name="distance">Distance from the query point</param>
+    /// <param name="numFound">Number of points found</param>
+    /// <param name="distToFurthest">Distance of the furthest away point to the query location</param>
     public delegate void QueryCallback(Vector3 position, int id, float distance, int numFound, float distToFurthest);
 
     /// <summary>
@@ -177,6 +180,41 @@ public class NearestNeighborSearch : IDisposable {
         for (int i = 0; i < numFound; ++i) {
             int idx = (int)neighbors[i].id;
             callback(positions[idx], ids[idx], neighbors[i].distance, (int)numFound, distToFurthest);
+        }
+    }
+
+    /// <summary>
+    /// Callback type for <see cref="ForAllNearest"/> that can transfer additional user data.
+    /// </summary>
+    /// <param name="position">Position of the neighbor</param>
+    /// <param name="id">User-defined ID of the neighbor</param>
+    /// <param name="distance">Distance from the query point</param>
+    /// <param name="numFound">Number of points found</param>
+    /// <param name="distToFurthest">Distance of the furthest away point to the query location</param>
+    /// <param name="userData">The user-defined data that is transferred from the call site</param>
+    public delegate void QueryCallback<T>(Vector3 position, int id, float distance, int numFound, float distToFurthest, ref T userData);
+
+    /// <summary>
+    /// Queries the k nearest neighbors within the given radius. Thread-safe: multiple queries
+    /// can be performed by different threads lock-free.
+    /// Invokes the given delegate for all points found, but not necessarily in order.
+    /// </summary>
+    /// <param name="position">The query location</param>
+    /// <param name="maxCount">Maximum number of neighbors to find ("k")</param>
+    /// <param name="maxRadius">Maximum distance between any neighbor and the query point</param>
+    /// <param name="callback">Delegate invoked for each neighbor</param>
+    /// <param name="userData">Will be passed by-reference to the delegate with each invoke</param>
+    public unsafe void ForAllNearest<T>(Vector3 position, int maxCount, float maxRadius, QueryCallback<T> callback, ref T userData) {
+        nint ptr = KnnQuery(accel, queryCache.Value, in position, maxRadius, (uint)maxCount,
+            out uint numFound, out float distToFurthest);
+        Span<Neighbor> neighbors = new(ptr.ToPointer(), (int)numFound);
+
+        if (numFound == 0)
+            return;
+
+        for (int i = 0; i < numFound; ++i) {
+            int idx = (int)neighbors[i].id;
+            callback(positions[idx], ids[idx], neighbors[i].distance, (int)numFound, distToFurthest, ref userData);
         }
     }
 }
