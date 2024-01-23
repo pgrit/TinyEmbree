@@ -22,7 +22,6 @@ namespace SeeSharp.Core.Tests.Geometry {
             TriangleMesh mesh = new(vertices, indices);
 
             using var rt = new Raytracer();
-            rt.EnableStats = true;
             rt.AddMesh(mesh);
             rt.CommitScene();
 
@@ -56,7 +55,6 @@ namespace SeeSharp.Core.Tests.Geometry {
             TriangleMesh mesh = new(vertices, indices);
 
             using Raytracer rt = new();
-            rt.EnableStats = true;
             rt.AddMesh(mesh);
             rt.CommitScene();
 
