@@ -8,7 +8,7 @@
 public class Raytracer : IDisposable {
     nint scene;
     bool isReady = false;
-    RayTracerStats stats;
+    RayStatCounter stats = new();
 
     /// <summary>
     /// Number of currently existing ray tracers. Increased with every object of this class that is created,
@@ -23,15 +23,9 @@ public class Raytracer : IDisposable {
     public void ResetStats() => stats = new();
 
     /// <summary>
-    /// If true (default) tracks the number of ray tracing operations and their outcomes.
-    /// Disable to minimize overhead.
-    /// </summary>
-    public bool EnableStats { get; set; } = false;
-
-    /// <summary>
     /// The ray tracing statistics since the last time <see cref="ResetStats"/> was called.
     /// </summary>
-    public RayTracerStats Stats => stats;
+    public RayTracerStats Stats => stats.Current;
 
     void Free() {
         if (scene != nint.Zero) {
@@ -91,11 +85,11 @@ public class Raytracer : IDisposable {
         Debug.Assert(isReady);
 
         TinyEmbreeCore.TraceSingle(scene, in ray, out var minHit);
-        if (EnableStats) Interlocked.Increment(ref stats.NumRays);
+        stats.NotifyRay();
 
         if (minHit.meshId == uint.MaxValue)
             return new Hit();
-        if (EnableStats) Interlocked.Increment(ref stats.NumRayHits);
+        stats.NotifyHit();
 
         Hit hit = new() {
             BarycentricCoords = new Vector2(minHit.u, minHit.v),
@@ -182,9 +176,9 @@ public class Raytracer : IDisposable {
     /// <returns>True if the shadow ray is occluded</returns>
     public bool IsOccluded(ShadowRay ray) {
         Debug.Assert(isReady);
-        if (EnableStats) Interlocked.Increment(ref stats.NumShadowRays);
+        stats.NotifyShadowRay();
         bool occluded = TinyEmbreeCore.IsOccluded(scene, in ray.Ray, ray.MaxDistance);
-        if (EnableStats) if (occluded) Interlocked.Increment(ref stats.NumOccluded);
+        if (occluded) stats.NotifyOccluded();
         return occluded;
     }
 
