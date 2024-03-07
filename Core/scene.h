@@ -23,7 +23,7 @@ public:
 
     void Finalize();
 
-    Hit Intersect(const Ray& ray);
+    void Intersect(const Ray& ray, Hit& hit);
 
     bool IsOccluded(const Ray& ray, float maxDistance);
 

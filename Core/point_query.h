@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-#include <embree3/rtcore.h>
+#include <embree4/rtcore.h>
 
 #include "knn.h"
 #include "common.h"

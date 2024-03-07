@@ -22,7 +22,7 @@ TINY_EMBREE_API void FinalizeScene(void* scene) {
 
 TINY_EMBREE_API void TraceSingle(void* scene, const Ray* ray, Hit* hit) {
     auto scn = (tinyembree::Scene*) scene;
-    *hit = scn->Intersect(*ray);
+    scn->Intersect(*ray, *hit);
 }
 
 TINY_EMBREE_API bool IsOccluded(void* scene, const Ray* ray, float maxDistance) {

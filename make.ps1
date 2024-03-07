@@ -1,5 +1,5 @@
 param(
-    [string] $renderLibVersion = "0.2.0",
+    [string] $renderLibVersion = "0.3.0",
     [string] $localRenderLibPath = $null
 )
 
@@ -29,22 +29,22 @@ Ensure-Dir runtimes
 
 Ensure-Dir runtimes/linux-x64
 Ensure-Dir runtimes/linux-x64/native
-cp prebuilt/linux/lib/libembree3.so.3 runtimes/linux-x64/native/
+cp prebuilt/linux/lib/libembree4.so.4 runtimes/linux-x64/native/
 cp prebuilt/linux/lib/libtbb.so.12.12 runtimes/linux-x64/native/libtbb.so.12
 
 Ensure-Dir runtimes/win-x64
 Ensure-Dir runtimes/win-x64/native
-cp prebuilt/win/bin/embree3.dll runtimes/win-x64/native/
+cp prebuilt/win/bin/embree4.dll runtimes/win-x64/native/
 cp prebuilt/win/bin/tbb12.dll runtimes/win-x64/native/
 
 Ensure-Dir runtimes/osx-x64
 Ensure-Dir runtimes/osx-x64/native
-cp prebuilt/osx/lib/libembree3.3.dylib runtimes/osx-x64/native/
+cp prebuilt/osx/lib/libembree4.4.dylib runtimes/osx-x64/native/
 cp prebuilt/osx/lib/libtbb.12.12.dylib runtimes/osx-x64/native/libtbb.12.dylib
 
 Ensure-Dir runtimes/osx-arm64
 Ensure-Dir runtimes/osx-arm64/native
-cp prebuilt/osx-arm64/lib/libembree3.3.dylib runtimes/osx-arm64/native/
+cp prebuilt/osx-arm64/lib/libembree4.4.dylib runtimes/osx-arm64/native/
 cp prebuilt/osx/lib/libtbb.12.12.dylib runtimes/osx-arm64/native/libtbb.12.dylib
 
 Ensure-Dir build

@@ -1,14 +1,20 @@
 #include <cassert>
 #include <algorithm>
 #include <limits>
+#include <iostream>
 
 #include "scene.h"
 
 namespace tinyembree {
 
+void ErrorFunction(void* userPtr, RTCError code, const char* str) {
+    std::cerr << str << std::endl;
+}
+
 void Scene::Init() {
     embreeDevice = initializeDevice();
     embreeScene = rtcNewScene(embreeDevice);
+    rtcSetDeviceErrorFunction(embreeDevice, ErrorFunction, nullptr);
     isInit = true;
 }
 
@@ -39,39 +45,35 @@ void Scene::Finalize() {
     rtcCommitScene(embreeScene);
 }
 
-Hit Scene::Intersect(const Ray& ray) {
-    struct RTCIntersectContext context;
-    rtcInitIntersectContext(&context);
-
+void Scene::Intersect(const Ray& ray, Hit& hit) {
     struct RTCRayHit rayhit;
     rayhit.ray.org_x = ray.origin.x;
     rayhit.ray.org_y = ray.origin.y;
     rayhit.ray.org_z = ray.origin.z;
+
     rayhit.ray.dir_x = ray.direction.x;
     rayhit.ray.dir_y = ray.direction.y;
     rayhit.ray.dir_z = ray.direction.z;
+
     rayhit.ray.tnear = ray.minDistance;
     rayhit.ray.tfar = std::numeric_limits<float>::infinity();
-    rayhit.ray.mask = 0;
+
+    rayhit.ray.mask = 1;
     rayhit.ray.flags = 0;
+    rayhit.ray.time = 0;
+
     rayhit.hit.geomID = RTC_INVALID_GEOMETRY_ID;
-    rayhit.hit.instID[0] = RTC_INVALID_GEOMETRY_ID;
 
-    rtcIntersect1(embreeScene, &context, &rayhit);
+    rtcIntersect1(embreeScene, &rayhit);
 
-    Hit hit {
+    hit = Hit {
         rayhit.hit.geomID, rayhit.hit.primID,
         rayhit.hit.u, rayhit.hit.v,
         rayhit.ray.tfar
     };
-
-    return hit;
 }
 
 bool Scene::IsOccluded(const Ray& ray, float maxDistance) {
-    struct RTCIntersectContext context;
-    rtcInitIntersectContext(&context);
-
     struct RTCRay rtcray;
     rtcray.org_x = ray.origin.x;
     rtcray.org_y = ray.origin.y;
@@ -84,7 +86,7 @@ bool Scene::IsOccluded(const Ray& ray, float maxDistance) {
     rtcray.mask = 0;
     rtcray.flags = 0;
 
-    rtcOccluded1(embreeScene, &context, &rtcray);
+    rtcOccluded1(embreeScene, &rtcray);
 
     return rtcray.tfar < maxDistance;
 }

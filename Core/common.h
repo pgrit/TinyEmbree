@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdio>
-#include <embree3/rtcore.h>
+#include <embree4/rtcore.h>
 
 namespace tinyembree {
     inline void errorFunction(void* userPtr, enum RTCError error, const char* str) {

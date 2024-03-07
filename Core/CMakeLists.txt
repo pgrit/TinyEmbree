@@ -21,7 +21,7 @@ else()
     set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/prebuilt/linux CACHE PATH " ")
 endif()
 
-find_package(embree 3 REQUIRED)
+find_package(embree 4 REQUIRED)
 
 target_include_directories(TinyEmbreeCore
     PRIVATE
