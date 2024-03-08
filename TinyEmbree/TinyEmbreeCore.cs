@@ -1,6 +1,18 @@
 namespace TinyEmbree;
 
 internal static class TinyEmbreeCore {
+
+#region LINKING_ON_WIN_WORKAROUND
+    static TinyEmbreeCore() {
+        // Some change in Embree between v3 and v4 causes the Win linker to no longer find tbb12.dll
+        // We work around this by first linking to TBB, so the linker will later just re-use the now
+        // successfully found tbb12.dll
+        // (the proper fix is likely deep within embree's CMake setup...)
+        if (System.OperatingSystem.IsWindows())
+            NativeLibrary.Load("tbb12.dll", System.Reflection.Assembly.GetExecutingAssembly(), DllImportSearchPath.SafeDirectories);
+    }
+#endregion LINKING_ON_WIN_WORKAROUND
+
     [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
     public static extern nint InitScene();
 
