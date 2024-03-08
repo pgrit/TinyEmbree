@@ -83,8 +83,9 @@ bool Scene::IsOccluded(const Ray& ray, float maxDistance) {
     rtcray.dir_z = ray.direction.z;
     rtcray.tnear = ray.minDistance;
     rtcray.tfar = maxDistance;
-    rtcray.mask = 0;
+    rtcray.mask = 1;
     rtcray.flags = 0;
+    rtcray.time = 0;
 
     rtcOccluded1(embreeScene, &rtcray);
 
