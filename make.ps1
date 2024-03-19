@@ -1,5 +1,5 @@
 param(
-    [string] $renderLibVersion = "0.3.0",
+    [string] $renderLibVersion = "0.3.2",
     [string] $localRenderLibPath = $null
 )
 
@@ -45,7 +45,7 @@ cp prebuilt/osx/lib/libtbb.12.12.dylib runtimes/osx-x64/native/libtbb.12.dylib
 Ensure-Dir runtimes/osx-arm64
 Ensure-Dir runtimes/osx-arm64/native
 cp prebuilt/osx-arm64/lib/libembree4.4.dylib runtimes/osx-arm64/native/
-cp prebuilt/osx/lib/libtbb.12.12.dylib runtimes/osx-arm64/native/libtbb.12.dylib
+cp prebuilt/osx-arm64/lib/libtbb.12.12.dylib runtimes/osx-arm64/native/libtbb.12.dylib
 
 Ensure-Dir build
 cd build
