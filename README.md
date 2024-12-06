@@ -1,6 +1,6 @@
 ![Build](https://github.com/pgrit/TinyEmbree/workflows/Build/badge.svg)
 <a href="https://www.nuget.org/packages/TinyEmbree/">
-<img src="https://buildstats.info/nuget/TinyEmbree" />
+![NuGet Downloads](https://img.shields.io/nuget/dt/TinyEmbree)
 </a>
 
 # TinyEmbree
