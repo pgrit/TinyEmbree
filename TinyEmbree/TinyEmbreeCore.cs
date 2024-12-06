@@ -1,6 +1,6 @@
 namespace TinyEmbree;
 
-internal static class TinyEmbreeCore {
+internal static partial class TinyEmbreeCore {
     [DllImport("TinyEmbreeCore", CallingConvention = CallingConvention.Cdecl)]
     public static extern nint InitScene();
 

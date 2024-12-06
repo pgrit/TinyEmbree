@@ -64,6 +64,15 @@ public class Raytracer : IDisposable {
     public void AddMesh(TriangleMesh mesh) {
         uint meshId = (uint)TinyEmbreeCore.AddTriangleMesh(scene, mesh.Vertices, mesh.NumVertices,
             mesh.Indices, mesh.NumFaces * 3);
+
+        // The underlying embree logic _should_ return sequential IDs here, but we don't rely on that to avoid nasty bugs
+        if (meshMap.Length <= meshId) {
+            int sz = int.Max(meshMap.Length * 2, 2 * ((int)meshId + 1)); // double the length so this is asymp. constant
+            TriangleMesh[] newMeshMap = new TriangleMesh[sz];
+            meshMap.CopyTo(newMeshMap, 0);
+            meshMap = newMeshMap;
+        }
+
         meshMap[meshId] = mesh;
     }
 
@@ -97,6 +106,8 @@ public class Raytracer : IDisposable {
             Mesh = meshMap[minHit.meshId],
             PrimId = minHit.primId
         };
+
+        Debug.Assert(hit.Mesh != null, "Hit a mesh with unknown ID");
 
         // Compute the position and face normal from the barycentric coordinates
         hit.Position = hit.Mesh.ComputePosition((int)hit.PrimId, hit.BarycentricCoords);
@@ -227,5 +238,5 @@ public class Raytracer : IDisposable {
         };
     }
 
-    readonly SortedList<uint, TriangleMesh> meshMap = new();
+    TriangleMesh[] meshMap = [];
 }

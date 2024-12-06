@@ -6,7 +6,7 @@ using System.Numerics;
 
 namespace TinyEmbree.Benchmark;
 
-class NearestNeighborBench<T> where T : NearestNeighborSearch {
+class NearestNeighborBench<T> where T : NearestNeighborSearch<int> {
     NearestNeighborBench(T accel) { this.accel = accel; }
 
     void GenerateDataSet(int numElements, float scale) {
@@ -43,14 +43,14 @@ class NearestNeighborBench<T> where T : NearestNeighborSearch {
             var p = RandomPoint(scale);
             var groundTruth = BruteForceNearest(p, k, r);
 
-            var result = accel.QueryNearest(p, k, r, out var maxR);
+            var result = accel.QueryNearestSorted(p, k, r, out var maxR);
 
             // Validate against brute-force
             float gtMax = 0.0f;
             for (int i = 0; i < k; ++i) {
-                Debug.Assert(result[i] == groundTruth[i]);
-                if (result[i] != groundTruth[i]) valid = false;
-                gtMax = float.Max(gtMax, (points[result[i]] - p).Length());
+                Debug.Assert(result[i].Id == groundTruth[i]);
+                if (result[i].Id != groundTruth[i]) valid = false;
+                gtMax = float.Max(gtMax, (points[(int)result[i].Id] - p).Length());
             }
 
             if (float.Abs(gtMax - maxR) > 1e-4f) valid = false;
@@ -61,7 +61,7 @@ class NearestNeighborBench<T> where T : NearestNeighborSearch {
     long Query(int numQueries, int k, float r, float scale) {
         var stop = Stopwatch.StartNew();
         for (int j = 0; j < numQueries; ++j) {
-            accel.QueryNearest(RandomPoint(scale), k, r, out var maxR);
+            accel.QueryNearestSorted(RandomPoint(scale), k, r, out var maxR);
         }
         stop.Stop();
         return stop.ElapsedMilliseconds;
@@ -103,17 +103,17 @@ class NearestNeighborBench<T> where T : NearestNeighborSearch {
             bench.GenerateDataSet(numPoints, scale);
             bench.AddData();
 
-            System.Console.WriteLine("Building acceleration structure...");
+            Console.WriteLine("Building acceleration structure...");
             buildTime += bench.BuildAccelerationStructure();
 
             if (validate && !bench.QueryAndValidate(10, numNearest, float.MaxValue, scale))
-                System.Console.WriteLine("Validation FAILED: results differ from brute force ground truth!");
+                Console.WriteLine("Validation FAILED: results differ from brute force ground truth!");
 
-            System.Console.WriteLine("Querying 10 nearest neighbors...");
+            Console.WriteLine("Querying 10 nearest neighbors...");
             queryTime += bench.Query(numQueries, numNearest, float.MaxValue, scale);
         }
 
-        System.Console.WriteLine($"Building with {numPoints} points took {buildTime / (float)numRepeats}ms on average.");
-        System.Console.WriteLine($"Querying {numQueries} times took {queryTime / (float)numRepeats}ms on average.");
+        Console.WriteLine($"Building with {numPoints} points took {buildTime / (float)numRepeats}ms on average.");
+        Console.WriteLine($"Querying {numQueries} times took {queryTime / (float)numRepeats}ms on average.");
     }
 }

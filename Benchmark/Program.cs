@@ -2,7 +2,7 @@
 using TinyEmbree;
 using TinyEmbree.Benchmark;
 
-NearestNeighborBench<NearestNeighborSearch>.Benchmark_10_Nearest(2, true, new(), 100000);
+NearestNeighborBench<NearestNeighborSearch<int>>.Benchmark_10_Nearest(2, true, new(), 100000);
 
 Console.WriteLine("Tracing rays in a typical test scene...");
 RayTracing.ComplexScene(10);
