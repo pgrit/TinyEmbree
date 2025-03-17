@@ -43,19 +43,9 @@ public class TriangleMesh {
         ShadingNormals = shadingNormals;
         TextureCoordinates = textureCoordinates;
 
-        // Compute shading normals from face normals if not set
-        if (ShadingNormals == null) {
-            ShadingNormals = new Vector3[vertices.Length];
-            for (int face = 0; face < NumFaces; ++face) {
-                ShadingNormals[indices[face * 3 + 0]] = FaceNormals[face];
-                ShadingNormals[indices[face * 3 + 1]] = FaceNormals[face];
-                ShadingNormals[indices[face * 3 + 2]] = FaceNormals[face];
-            }
-        } else {
-            // Ensure normalization
-            for (int i = 0; i < ShadingNormals.Length; ++i)
-                ShadingNormals[i] = Vector3.Normalize(ShadingNormals[i]);
-        }
+        // Ensure normalization
+        for (int i = 0; i < ShadingNormals?.Length; ++i)
+            ShadingNormals[i] = Vector3.Normalize(ShadingNormals[i]);
     }
 
     /// <summary>
@@ -88,6 +78,9 @@ public class TriangleMesh {
     /// <param name="barycentric">Barycentric coordinates within that triangle</param>
     /// <returns>Shading normal</returns>
     public Vector3 ComputeShadingNormal(int faceIdx, Vector2 barycentric) {
+        if (ShadingNormals == null)
+            return FaceNormals[faceIdx];
+
         var v1 = ShadingNormals[Indices[faceIdx * 3 + 0]];
         var v2 = ShadingNormals[Indices[faceIdx * 3 + 1]];
         var v3 = ShadingNormals[Indices[faceIdx * 3 + 2]];
