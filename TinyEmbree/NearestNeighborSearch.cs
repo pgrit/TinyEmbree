@@ -232,4 +232,33 @@ public class NearestNeighborSearch<T> : IDisposable {
             callback(positions[(int)n.Id], userData[(int)n.Id], n.Distance, neighbors.Length, distToFurthest, ref queryUserData);
         }
     }
+
+    /// <summary>
+    /// Interface to facilitate allocation-free callbacks for kNN searches
+    /// </summary>
+    public interface IMergeOp {
+        /// <summary>
+        /// Called once for each nearby point
+        /// </summary>
+        /// <param name="position">Position of the neighbor</param>
+        /// <param name="userData">Data associated with this neighbor point</param>
+        /// <param name="distance">Distance to the query point</param>
+        /// <param name="numFound">Total number of neighbors found</param>
+        /// <param name="distToFurthest">Distance to the furthest away neighbor that was found</param>
+        void Invoke(Vector3 position, T userData, float distance, int numFound, float distToFurthest);
+    }
+
+    /// <summary>
+    /// Queries the k nearest neighbors within the given radius. Thread-safe, lock-free, and allocation-free.
+    /// Invokes the given callback functor for all points found, but not necessarily in order.
+    /// </summary>
+    /// <param name="position">The query location</param>
+    /// <param name="maxCount">Maximum number of neighbors to find ("k")</param>
+    /// <param name="maxRadius">Maximum distance between any neighbor and the query point</param>
+    /// <param name="mergeOp">The <see cref="IMergeOp"/> that is invoked for every neighbor point</param>
+    public void ForAllNearest<TQuery>(Vector3 position, int maxCount, float maxRadius, ref TQuery mergeOp) where TQuery : IMergeOp, allows ref struct{
+        var neighbors = QueryNearest(position, maxCount, maxRadius, out float distToFurthest);
+        foreach (var n in neighbors)
+            mergeOp.Invoke(positions[(int)n.Id], userData[(int)n.Id], n.Distance, neighbors.Length, distToFurthest);
+    }
 }
